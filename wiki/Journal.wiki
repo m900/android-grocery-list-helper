@@ -6,10 +6,14 @@ This journal is specified to follow the progress of the development of the andro
 
 = Details for 2/28/2012 =
 
-*I finished the iOS xmlvm.org tutorials
-*I finished the Android xmlvm.org tutorials
-*I submitted the Tutorial homeworks
+*I finished the iOS xmlvm.org tutorials.
+
+*I finished the Android xmlvm.org tutorials.
+
+*I submitted the Tutorial homeworks.
+
 *I submitted a basic documentation of the project.
+
 
 = Details for 3/6/2012 =
 
