@@ -1,0 +1,19 @@
+#summary This is the Android-grocery-list-helper journal.
+
+= Introduction =
+
+This journal is specified to follow the progress of the development of the android application.
+
+
+= Details for 3/6/2012 =
+
+*I installed all the software required to develop the application on the-go for my laptop (I developed all the Android tutorial files on my PC).
+
+*I set up the SVN repository on Netbeans for both, home and laptop computers.
+
+*Started to watch tutorials about developing the application on Android platforms to create a basic checklist program to recreate a grocery-to-do list on the app.
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
