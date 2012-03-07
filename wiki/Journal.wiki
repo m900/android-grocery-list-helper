@@ -23,7 +23,8 @@ This journal is specified to follow the progress of the development of the andro
 
 *Started to watch tutorials about developing the application on Android platforms to create a basic checklist program to recreate a grocery-to-do list on the app.
 
-#################################################
+################################
+
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
   * Headings, paragraphs, and lists
