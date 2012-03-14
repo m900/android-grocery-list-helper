@@ -1,6 +1,5 @@
 package com.luisromero.listmenu;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,6 @@ public class AddListItemActivity extends Activity{
 		Button btnAdd=(Button) findViewById(R.id.btnAdd);
 		
         btnCancel.setOnClickListener(new OnClickListener() {
-			
 			public void onClick(View v) {
 				// Close the activity and goes back to the caller activity
 				AddListItemActivity.this.finish();
@@ -26,9 +24,8 @@ public class AddListItemActivity extends Activity{
 		});
         
         btnAdd.setOnClickListener(new OnClickListener() {
-			
 			public void onClick(View v) {
-				
+				// Adds item to the list on MainActivity
 			}
 		});
 	}

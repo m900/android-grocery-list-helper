@@ -1,6 +1,5 @@
 package com.luisromero.listmenu;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 
@@ -67,15 +66,20 @@ public class MainActivity extends Activity {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				setPosItem(position);
-				setViewItem(view);
 				
 				CheckedTextView ListTextView = (CheckedTextView)view;
-				/*If some item is checked others cannot be checked*/
-				if(getIsSomeItemChecked()){
-					ListTextView.setChecked(!ListTextView.isChecked());
+				/*If some item is checked others cannot be checked
+				 * And only the one checked can be unchecked.
+				 * */
+				if(getIsSomeItemChecked()==false){
+					ListTextView.setChecked(true);
+					setPosItem(position);
+					setViewItem(view);
+					setIsSomeItemChecked(true);
+				}else if(getIsSomeItemChecked()==true && position==getPosItem()){
+					ListTextView.setChecked(false);
+					setIsSomeItemChecked(false);
 				}
-				
 			}
 		});
     }
@@ -89,16 +93,14 @@ public class MainActivity extends Activity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	// TODO Auto-generated method stub
     	if(item.getItemId()==R.id.item1){
     		//Log.d("Option","Add item was clicked");
-    
-    	
     		startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
     	}else if(item.getItemId()==R.id.item2){
-    		Log.d("Option","Edit item was clicked");
+    		//Log.d("Option","Edit item was clicked");
+    		startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
     	}else if(item.getItemId()==R.id.item3){
-    		Log.d("Option","Delete item was clicked");
+    		//Log.d("Option","Delete item was clicked");
     	}else if(item.getItemId()==R.id.item4){
     		//Log.d("Option","Close App was clicked");
     		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -108,7 +110,6 @@ public class MainActivity extends Activity {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// This closes the Main activity- and goes to android-dashboard
-					
 					MainActivity.this.finish();
 		            System.exit(0);
 				}
@@ -119,11 +120,9 @@ public class MainActivity extends Activity {
 					dialog.cancel();
 				}
 			});
-    		
     		AlertDialog alert=builder.create();//create the alert with the information
     		alert.show();//to show the dialog before closing
     	}
-    	
     	return super.onOptionsItemSelected(item);
     }
     
