@@ -3,6 +3,18 @@
 = Introduction =
 
 This journal is specified to follow the progress of the development of the android application.
+= Details for 3/13/2012 =
+*I created another activity that handles the Add item to list behavior.
+*I added a bottom menu that is activated when MENU button is pressed on the phone or emulator- with the following options (Add,Delete,Close)
+*Adding new context menu when pressing elements in the list the user is going to be able to edit the entry - rename it.
+
+= Details for 3/6/2012 =
+
+*I installed all the software required to develop the application on the-go for my laptop (I developed all the Android tutorial files on my PC).
+
+*I set up the SVN repository on Netbeans for both, home and laptop computers.
+
+*Started to watch tutorials about developing the application on Android platforms to create a basic checklist program to recreate a grocery-to-do list on the app.
 
 = Details for 2/28/2012 =
 
@@ -15,13 +27,7 @@ This journal is specified to follow the progress of the development of the andro
 *I submitted a basic documentation of the project.
 
 
-= Details for 3/6/2012 =
 
-*I installed all the software required to develop the application on the-go for my laptop (I developed all the Android tutorial files on my PC).
-
-*I set up the SVN repository on Netbeans for both, home and laptop computers.
-
-*Started to watch tutorials about developing the application on Android platforms to create a basic checklist program to recreate a grocery-to-do list on the app.
 
 ################################
 
