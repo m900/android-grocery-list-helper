@@ -26,6 +26,7 @@ public class AddListItemActivity extends Activity{
         btnAdd.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// Adds item to the list on MainActivity
+				
 			}
 		});
 	}
