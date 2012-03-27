@@ -1,30 +1,40 @@
 package com.luisromero.listmenu;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-
 import android.content.DialogInterface;
-import android.content.Intent;
+//import android.content.Intent;
+import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckedTextView;
-
+import android.widget.EditText;
 
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
-    /** Called when the activity is first created. */
-	protected String[] myList = new String[] {"Onion","Garlic","Cilantro","Milk"}; 
-    private int posItem=0;
-    private View viewItem;
-    private boolean IsSomeItemChecked=false;
+public class MainActivity extends Activity implements OnClickListener, OnKeyListener , OnItemClickListener{
+    /** Called when the activity is first created. */    
+    EditText txtItem;
+	Button btnAdd;
+	ListView listItems;
+	
+	ArrayList<String> toDoItems;
+	ArrayAdapter<String> aa;
+	
+	int posItem=0;
+    View viewItem;
+    boolean IsSomeItemChecked=false;
     
     
     public void setIsSomeItemChecked(boolean checked){
@@ -57,31 +67,22 @@ public class MainActivity extends Activity {
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ListView lv = new ListView(this);
-        lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,myList));
-        setContentView(lv);
-        lv.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				
-				CheckedTextView ListTextView = (CheckedTextView)view;
-				/*If some item is checked others cannot be checked
-				 * And only the one checked can be unchecked.
-				 * */
-				if(getIsSomeItemChecked()==false){
-					ListTextView.setChecked(true);
-					setPosItem(position);
-					setViewItem(view);
-					setIsSomeItemChecked(true);
-				}else if(getIsSomeItemChecked()==true && position==getPosItem()){
-					ListTextView.setChecked(false);
-					setIsSomeItemChecked(false);
-				}
-			}
-		});
+        
+        txtItem = (EditText) findViewById(R.id.txtItem);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
+        listItems= (ListView) findViewById(R.id.listItems);
+        
+        btnAdd.setOnClickListener(this);
+        txtItem.setOnClickListener(this);
+        toDoItems = new ArrayList<String>();
+        aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
+        listItems.setAdapter(aa);
+        listItems.setOnItemClickListener(this);
+        
+        //SQLiteDatabase db = openOrCreateDatabase("GroceryListDB", MODE_PRIVATE, null);
+        //db.execSQL("CREATE TABLE IF NOT EXISTS item (id INT(3), label VARCHAR, quantity INT(3))");
     }
     
     @Override //to create option menu from xml file
@@ -95,13 +96,11 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
     		//Log.d("Option","Add item was clicked");
-    		startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
+    		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
     	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Edit item was clicked");
-    		startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
+    		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
     	}else if(item.getItemId()==R.id.item3){
-    		//Log.d("Option","Delete item was clicked");
-    	}else if(item.getItemId()==R.id.item4){
     		//Log.d("Option","Close App was clicked");
     		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
     		builder.setMessage("Are you sure you want to exit?");
@@ -125,5 +124,41 @@ public class MainActivity extends Activity {
     	}
     	return super.onOptionsItemSelected(item);
     }
+
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		CheckedTextView ListTextView = (CheckedTextView)view;
+		/*If some item is checked others cannot be checked
+		 * And only the one checked can be unchecked.
+		 * */
+		if(getIsSomeItemChecked()==false){
+			ListTextView.setChecked(true);
+			setPosItem(position);
+			setViewItem(view);
+			setIsSomeItemChecked(true);
+		}else if(getIsSomeItemChecked()==true && position==getPosItem()){
+			ListTextView.setChecked(false);
+			setIsSomeItemChecked(false);
+		}
+	}
     
+    private void addItem(String item){
+    	if(item.length()>0){
+    		this.toDoItems.add(item);
+    		this.aa.notifyDataSetChanged();
+    		this.txtItem.setText("");
+    	}
+    }
+
+    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+		if(event.getAction()==KeyEvent.ACTION_DOWN & keyCode == KeyEvent.KEYCODE_DPAD_CENTER){
+			this.addItem(this.txtItem.getText().toString());
+		}
+		return false;
+	}
+
+    public void onClick(View v) {
+		if(v==this.btnAdd){
+			this.addItem(this.txtItem.getText().toString());
+		}
+	}
 }
