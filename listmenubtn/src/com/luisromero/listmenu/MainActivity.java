@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import android.widget.ListView;
 
@@ -95,11 +96,20 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
-    		//Log.d("Option","Add item was clicked");
+    		//Log.d("Option","Edit item was clicked");
     		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
     	}else if(item.getItemId()==R.id.item2){
-    		//Log.d("Option","Edit item was clicked");
+    		//Log.d("Option","Delete item was clicked");
     		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
+    		if(getIsSomeItemChecked()==true){
+    			setIsSomeItemChecked(false);//restart
+    			setPosItem(0);//restart
+    			//CheckedTextView restartView = (CheckedTextView)viewItem;
+    			//restartView.setChecked(false);
+    			deleteItem(getPosItem());
+    		}else{
+    			Toast.makeText(getApplicationContext(),"Select an item to delete",Toast.LENGTH_SHORT).show();
+    		}
     	}else if(item.getItemId()==R.id.item3){
     		//Log.d("Option","Close App was clicked");
     		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -126,6 +136,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    	viewItem=view;
 		CheckedTextView ListTextView = (CheckedTextView)view;
 		/*If some item is checked others cannot be checked
 		 * And only the one checked can be unchecked.
@@ -144,7 +155,17 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     private void addItem(String item){
     	if(item.length()>0){
     		this.toDoItems.add(item);
-    		this.aa.notifyDataSetChanged();
+    		this.aa.notifyDataSetChanged(); //Array adapter notify
+    		this.txtItem.setText("");
+    	}
+    }
+    
+    private void deleteItem(int itemId){
+    	if(itemId >=0){
+    		//For toast message delete
+    		//String itemName = (String)listItems.getItemAtPosition(itemId);
+    		this.toDoItems.remove(itemId);
+    		aa.notifyDataSetChanged();
     		this.txtItem.setText("");
     	}
     }
