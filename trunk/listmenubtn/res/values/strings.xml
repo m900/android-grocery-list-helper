@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, ListmenubtnActivity!</string>
     <string name="app_name">Listmenubtn</string>
+    <string name="add">Add Item</string>
 
 </resources>
