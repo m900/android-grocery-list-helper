@@ -104,8 +104,8 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		if(getIsSomeItemChecked()==true){
     			setIsSomeItemChecked(false);//restart
     			setPosItem(0);//restart
-    			//CheckedTextView restartView = (CheckedTextView)viewItem;
-    			//restartView.setChecked(false);
+    			CheckedTextView restartView = (CheckedTextView)viewItem;
+    			restartView.setChecked(false);
     			deleteItem(getPosItem());
     		}else{
     			Toast.makeText(getApplicationContext(),"Select an item to delete",Toast.LENGTH_SHORT).show();
