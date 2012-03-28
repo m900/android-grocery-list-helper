@@ -14,13 +14,14 @@ public class SplashScreen extends Activity{
 		setContentView(R.layout.splash_screen);
 		
 		Handler x = new Handler();
-		x.postDelayed(new SplashHandler(),1500);
+		x.postDelayed(new SplashHandler(),2000);
 	}
 	
 	class SplashHandler implements Runnable{
 		public void run(){
 			startActivity(new Intent(getApplication(), MainActivity.class));
 			SplashScreen.this.finish();
+			//System.exit(0);
 		}
 	}
 }
