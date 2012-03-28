@@ -5,5 +5,11 @@
     <string name="app_name">Grocery To-Do App</string>
     <string name="add">Add Item</string>
     <string name="splash">splash</string>
+    <string name="editItemLabel">Edit Item Here</string>
+    <string name="editBtn">Edit Item</string>
+    <string name="editItemHint">Edit the list item here</string>
+    <string name="cancelBtn">Cancel</string>
+    <string name="okBtn">OK</string>
+    <string name="acceptBtn">Accept</string>
 
 </resources>

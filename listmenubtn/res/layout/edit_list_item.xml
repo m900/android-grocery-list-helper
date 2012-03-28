@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-        android:text="Edit Item here"
+        android:text="@string/editItemLabel"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -20,8 +20,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="20dp" >
-
+        android:layout_marginTop="20dp" 
+        android:hint="@string/editItemHint"
+        >
+		
         <requestFocus />
     </EditText>
 
@@ -32,7 +34,7 @@
         android:layout_below="@+id/editText1"
         android:layout_marginTop="20dp"
         android:layout_toLeftOf="@+id/textView1"
-        android:text="Edit Item" />
+        android:text="@string/editBtn" />
 
     <Button
         android:id="@+id/btnCancel"
@@ -41,6 +43,6 @@
         android:layout_alignBaseline="@+id/btnEdit"
         android:layout_alignBottom="@+id/btnEdit"
         android:layout_toRightOf="@+id/textView1"
-        android:text="Cancel" />
+        android:text="@string/cancelBtn" />
 
 </RelativeLayout>
