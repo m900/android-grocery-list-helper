@@ -14,7 +14,7 @@ public class SplashScreen extends Activity{
 		setContentView(R.layout.splash_screen);
 		
 		Handler x = new Handler();
-		x.postDelayed(new SplashHandler(),2000);
+		x.postDelayed(new SplashHandler(),1500);
 	}
 	
 	class SplashHandler implements Runnable{
