@@ -3,6 +3,23 @@
 = Introduction =
 
 This journal is specified to follow the progress of the development of the android application.
+
+= Details for 3/27/2012 =
+*Improved the Checked item list behavior for deletion.
+
+*Implemented the delete list item behavior.
+
+*Created a customized splash screen PNG picture file.
+
+*Implemented the Splash-screen activity to show the application picture when user launches application. 
+
+= Details for 3/20/2012 =
+*Improved structure of application code implementing Android OS interfaces for easier redability.
+
+*Implemented the Add to list item behavior.
+
+*Implemented the Exit from application behavior.
+
 = Details for 3/13/2012 =
 *I created another activity that handles the Add item to list behavior.
 
