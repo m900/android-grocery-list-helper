@@ -2,7 +2,8 @@
 <resources>
 
     <string name="hello">Hello World, ListmenubtnActivity!</string>
-    <string name="app_name">Listmenubtn</string>
+    <string name="app_name">Grocery To-Do App</string>
     <string name="add">Add Item</string>
+    <string name="splash">splash</string>
 
 </resources>
