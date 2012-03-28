@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 
 //import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
@@ -99,7 +100,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     	if(item.getItemId()==R.id.item1){
     		//Log.d("Option","Edit item was clicked");
     		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
-    		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
+    		startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
     	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Delete item was clicked");
     		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
