@@ -98,10 +98,13 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
+    		//TO-DO// Sends user to a map where a store location is showed- item can be bought there.
+    		startActivity(new Intent(MainActivity.this,MapActivity.class));
+    	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Edit item was clicked");
     		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
     		startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
-    	}else if(item.getItemId()==R.id.item2){
+    	}else if(item.getItemId()==R.id.item3){
     		//Log.d("Option","Delete item was clicked");
     		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
     		if(getIsSomeItemChecked()==true){
@@ -113,7 +116,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		}else{
     			Toast.makeText(getApplicationContext(),"Select an item to delete",Toast.LENGTH_SHORT).show();
     		}
-    	}else if(item.getItemId()==R.id.item3){
+    	}else if(item.getItemId()==R.id.item4){
     		//Log.d("Option","Close App was clicked");
     		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
     		builder.setMessage("Are you sure you want to exit?");
