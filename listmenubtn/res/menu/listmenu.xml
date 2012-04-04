@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >"
-	<item android:id="@+id/item1" android:title="Edit Item" android:icon="@android:drawable/ic_menu_edit"/>
-	<item android:id="@+id/item2" android:title="Delete Item" android:icon="@android:drawable/ic_menu_delete"/>
-	<item android:id="@+id/item3" android:title="Exit" android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
+    <item android:id="@+id/item1" android:title="Map Item" android:icon="@android:drawable/ic_menu_mapmode"/>
+	<item android:id="@+id/item2" android:title="Edit Item" android:icon="@android:drawable/ic_menu_edit"/>
+	<item android:id="@+id/item3" android:title="Delete Item" android:icon="@android:drawable/ic_menu_delete"/>
+	<item android:id="@+id/item4" android:title="Exit" android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
 </menu>
