@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
     		//TO-DO// Sends user to a map where a store location is showed- item can be bought there.
-    		startActivity(new Intent(MainActivity.this,MapActivity.class));
+    		startActivity(new Intent(MainActivity.this,ListItemMapActivity.class));
     	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Edit item was clicked");
     		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
