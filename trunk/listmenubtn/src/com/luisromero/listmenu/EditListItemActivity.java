@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class EditListItemActivity extends Activity implements OnClickListener, OnKeyListener{
 	Button btnSaveEdit;
 	Button btnCancel;
 	EditText txtProductName;
+	Spinner spinnerStores;
+	ArrayAdapter<CharSequence> spinnerAdapter;
 	private String productName;
 	private Bundle bundle;
 	@Override
@@ -25,6 +29,12 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 		btnSaveEdit = (Button) findViewById(R.id.btnSaveProductEdit);
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		txtProductName=(EditText) findViewById(R.id.txtProductName);
+		spinnerStores=(Spinner) findViewById(R.id.ddLocation);
+		
+		spinnerAdapter = ArrayAdapter.createFromResource(
+	            this, R.array.storeNames, android.R.layout.simple_spinner_item);
+	    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    spinnerStores.setAdapter(spinnerAdapter);
 		
 		btnCancel.setOnClickListener(this);
 		btnSaveEdit.setOnClickListener(this);
