@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:text="@string/editItemLabel" android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/lblEditProductTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/lblEditProductTitle"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="20dp"
-        android:inputType="text"
-        >
-        
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/txtProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:hint="@string/txtEditProductNameHint"
+            >
+			
+            <requestFocus />
+        </EditText>
 
-    <Button
-        android:id="@+id/btnEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@+id/textView1"
-        android:text="@string/editBtn" />
+        <EditText
+            android:id="@+id/txtProductQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:hint="@string/txtProductQuantityHint"
+            />
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnEdit"
-        android:layout_alignBottom="@+id/btnEdit"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="@string/cancelBtn" />
+        <Spinner
+            android:id="@+id/ddLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/txtInStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lblProductInStock" />
+
+        <Button
+            android:id="@+id/btnSaveProductEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnSaveProductEdit" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancelBtn" />
+
+    </LinearLayout>
