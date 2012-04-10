@@ -83,9 +83,6 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
         listItems.setAdapter(aa);
         listItems.setOnItemClickListener(this);
-        
-        //SQLiteDatabase db = openOrCreateDatabase("GroceryListDB", MODE_PRIVATE, null);
-        //db.execSQL("CREATE TABLE IF NOT EXISTS item (id INT(3), label VARCHAR, quantity INT(3))");
     }
     
     @Override //to create option menu from xml file
@@ -185,7 +182,13 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 
     public void onClick(View v) {
 		if(v==this.btnAdd){
-			this.addItem(this.txtItem.getText().toString());
+			String productName;
+			productName=this.txtItem.getText().toString();
+			
+			Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
+			intent.putExtra("productName",productName);
+			startActivity(intent);
+			//this.addItem(this.txtItem.getText().toString());
 		}
 	}
 }
