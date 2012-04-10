@@ -4,6 +4,21 @@
 
 This journal is specified to follow the progress of the development of the android application.
 
+(UPDATES)!!
+= Details for 4/10/2012 =
+*Researched Reverse-geocoding on Google API to gather the location name- providing the longitude- and latitude gathered real time.
+
+*Improved the UX/UI of adding new products - using another activity to edit the product information further- quantity and location.
+
+*Saving information on the database -SQLite(item, location, locationStock) to later request it and show it on the list and/or show them on the map.
+
+= Details for 4/03/2012 =
+*Added GoogleMaps - API to handle store location mapping.
+
+*Added custom pin - to show information of the location - a green basket (.png).
+
+*Configure the map-click listener to show a toast gathering the longitude and latitude coordinates -real-time.
+
 = Details for 3/27/2012 =
 *Improved the Checked item list behavior for deletion.
 
