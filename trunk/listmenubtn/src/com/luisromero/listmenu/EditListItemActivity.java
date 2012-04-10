@@ -17,9 +17,12 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 	Button btnSaveEdit;
 	Button btnCancel;
 	EditText txtProductName;
+	EditText txtProductQuantity;
+	
 	Spinner spinnerStores;
 	ArrayAdapter<CharSequence> spinnerAdapter;
 	private String productName;
+	private String productQuantity;
 	private Bundle bundle;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 		btnSaveEdit = (Button) findViewById(R.id.btnSaveProductEdit);
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		txtProductName=(EditText) findViewById(R.id.txtProductName);
+		txtProductQuantity=(EditText) findViewById(R.id.txtProductQuantity);
 		spinnerStores=(Spinner) findViewById(R.id.ddLocation);
 		
 		spinnerAdapter = ArrayAdapter.createFromResource(
@@ -61,8 +65,10 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 	public void finish() {
 		// Prepare data intent 
 		this.productName=txtProductName.getText().toString();
+		this.productQuantity=txtProductQuantity.getText().toString().trim();
 		Intent data = new Intent();
 		data.putExtra("producName", this.productName);
+		data.putExtra("productQuantity", this.productQuantity);
 		setResult(RESULT_OK,data);
 		super.finish();
 	}

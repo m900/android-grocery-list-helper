@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-//import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import android.widget.ListView;
 
 public class MainActivity extends Activity implements OnClickListener, OnKeyListener , OnItemClickListener{
@@ -194,9 +193,25 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {     
     	 if (resultCode == RESULT_OK && requestCode==1) { 
     		 if(data.hasExtra("producName")){
-    			 String producName=data.getExtras().getString("producName");
-    			 this.addItem(producName);
+    			 String productName=data.getExtras().getString("producName");
+    			 int productQuantity=Integer.parseInt(data.getExtras().getString("productQuantity"));
+    			 
+    			 this.addItem(productName);
+    			 this.insertProductToDB(productName, productQuantity);
     		 }
          }
     }
+    
+    public void insertProductToDB(String product, int quantity){
+		DbHelper dbHelper= new DbHelper(this);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		
+		ContentValues content = new ContentValues();
+		content.put(DbHelper.PRODUCT,product);
+		content.put(DbHelper.QUANTITY,quantity);
+		//content.put(DbHelper.LOCATION_NAME,store);
+		db.insert("items", DbHelper.PRODUCT, content);
+		db.close();
+	}
+    
 }
