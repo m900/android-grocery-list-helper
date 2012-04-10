@@ -106,10 +106,10 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
     		if(getIsSomeItemChecked()==true){
     			setIsSomeItemChecked(false);//restart
-    			setPosItem(0);//restart
     			CheckedTextView restartView = (CheckedTextView)viewItem;
     			restartView.setChecked(false);
     			deleteItem(getPosItem());
+    			setPosItem(0);//restart item selected for deletion
     		}else{
     			Toast.makeText(getApplicationContext(),"Select an item to delete",Toast.LENGTH_SHORT).show();
     		}
@@ -184,11 +184,19 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 		if(v==this.btnAdd){
 			String productName;
 			productName=this.txtItem.getText().toString();
-			
 			Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
 			intent.putExtra("productName",productName);
-			startActivity(intent);
-			//this.addItem(this.txtItem.getText().toString());
+			startActivityForResult(intent, 1);
 		}
 	}
+    
+    @Override 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {     
+    	 if (resultCode == RESULT_OK && requestCode==1) { 
+    		 if(data.hasExtra("producName")){
+    			 String producName=data.getExtras().getString("producName");
+    			 this.addItem(producName);
+    		 }
+         }
+    }
 }
