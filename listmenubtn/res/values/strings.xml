@@ -14,5 +14,11 @@
     <string name="txtProductQuantityHint">Product Quantity</string>
     <string name="lblProductInStock">In Stock:</string>
     <string name="btnSaveProductEdit">Save to list</string>
-
+    <string name="storeNamesPrompt">Choose a store</string>
+    <string-array name="storeNames">
+        <item>SafeWay</item>
+        <item>Whole Foods</item>
+        <item>Luckys</item>
+        <item>Trader Joes</item>
+    </string-array>
 </resources>
