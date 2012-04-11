@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class EditListItemActivity extends Activity implements OnClickListener, OnKeyListener{
+public class EditListItemActivity extends Activity implements OnClickListener, OnKeyListener, OnItemSelectedListener{
 	Button btnSaveEdit;
 	Button btnCancel;
 	EditText txtProductName;
@@ -23,6 +25,7 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 	ArrayAdapter<CharSequence> spinnerAdapter;
 	private String productName;
 	private String productQuantity;
+	private String productLocation;
 	private Bundle bundle;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,12 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 		
 		btnCancel.setOnClickListener(this);
 		btnSaveEdit.setOnClickListener(this);
-		
+		spinnerStores.setOnItemSelectedListener(this);
 		bundle=getIntent().getExtras();
 		productName=(String)bundle.get("productName");
+		productQuantity=(String)bundle.get("productQuantity");
 		txtProductName.setText(productName);
+		txtProductQuantity.setText(productQuantity);
 	}
 
 	public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -69,8 +74,20 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 		Intent data = new Intent();
 		data.putExtra("producName", this.productName);
 		data.putExtra("productQuantity", this.productQuantity);
+		data.putExtra("productLocation", this.productLocation);
 		setResult(RESULT_OK,data);
 		super.finish();
+	}
+
+	public void onItemSelected(AdapterView<?> adapter, View arg1, int position,
+			long arg3) {
+		this.productLocation=adapter.getItemAtPosition(position).toString();
+		
+	}
+
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

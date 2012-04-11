@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -31,8 +32,16 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 	Button btnAdd;
 	ListView listItems;
 	
+	DbHelper dbHelper;
+	SQLiteDatabase db;
+	
 	ArrayList<String> toDoItems;
 	ArrayAdapter<String> aa;
+	Item product;
+	
+	String item_location;
+	String item_name;
+	ArrayList<String> locations;
 	
 	int posItem=0;
     View viewItem;
@@ -78,7 +87,12 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         
         btnAdd.setOnClickListener(this);
         txtItem.setOnClickListener(this);
-        toDoItems = new ArrayList<String>();
+        dbHelper = new DbHelper(this);
+        db=dbHelper.getWritableDatabase();
+        
+        toDoItems = this.getAllProducts();
+        locations=new ArrayList<String>();
+        
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
         listItems.setAdapter(aa);
         listItems.setOnItemClickListener(this);
@@ -95,11 +109,21 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
     		//TO-DO// Sends user to a map where a store location is showed- item can be bought there.
-    		startActivity(new Intent(MainActivity.this,ListItemMapActivity.class));
+    		Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
+    		//intent.putExtra("productName", (String)listItems.getItemAtPosition(getPosItem()));
+    		intent.putExtra("storeLocation", this.item_location);
+    		startActivity(intent);
+    		
     	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Edit item was clicked");
     		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
-    		startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
+    		String productName = (String)listItems.getItemAtPosition(getPosItem());
+    		String quantity="";
+    		Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
+			intent.putExtra("productName",productName);
+			intent.putExtra("productQuantity", quantity);	
+			startActivityForResult(intent, 2);
+    	
     	}else if(item.getItemId()==R.id.item3){
     		//Log.d("Option","Delete item was clicked");
     		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
@@ -165,8 +189,11 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     private void deleteItem(int itemId){
     	if(itemId >=0){
     		//For toast message delete
-    		//String itemName = (String)listItems.getItemAtPosition(itemId);
+    		String itemName = (String)listItems.getItemAtPosition(itemId);
+    		
     		this.toDoItems.remove(itemId);
+    		//this.locations.remove(getPosItem()-1);
+    		this.deleteProductFromDB(itemName);
     		aa.notifyDataSetChanged();
     		this.txtItem.setText("");
     	}
@@ -185,6 +212,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 			productName=this.txtItem.getText().toString();
 			Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
 			intent.putExtra("productName",productName);
+			intent.putExtra("productQuantity","");
 			startActivityForResult(intent, 1);
 		}
 	}
@@ -195,23 +223,67 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		 if(data.hasExtra("producName")){
     			 String productName=data.getExtras().getString("producName");
     			 int productQuantity=Integer.parseInt(data.getExtras().getString("productQuantity"));
+    			 item_location=data.getExtras().getString("productLocation");
+    			 locations.add(item_location);
     			 
     			 this.addItem(productName);
-    			 this.insertProductToDB(productName, productQuantity);
+    			 this.insertProductToDB(productName, productQuantity, item_location);
     		 }
+         }else if(resultCode == RESULT_OK && requestCode==2){
+        	 if(data.hasExtra("productName") && data.hasExtra("productQuantity")){
+        		 String productName=data.getExtras().getString("producName");
+    			 int productQuantity=Integer.parseInt(data.getExtras().getString("productQuantity"));
+        		 this.updateProductToDB(productName,productQuantity);
+        	 }
+        	 
          }
     }
     
-    public void insertProductToDB(String product, int quantity){
-		DbHelper dbHelper= new DbHelper(this);
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+    private int updateProductToDB(String product, int quantity) {
+		db=dbHelper.getWritableDatabase();
+		String[] products={product};
+		ContentValues content = new ContentValues();
+		content.put(DbHelper.PRODUCT,product);
+		content.put(DbHelper.QUANTITY,quantity);
+		return db.update("items", content,DbHelper.PRODUCT+"=?",products);
+	}
+
+	public void insertProductToDB(String product, int quantity, String location){
+		
+		db = dbHelper.getWritableDatabase();
 		
 		ContentValues content = new ContentValues();
 		content.put(DbHelper.PRODUCT,product);
 		content.put(DbHelper.QUANTITY,quantity);
+		content.put(DbHelper.LOCATION,location);
 		//content.put(DbHelper.LOCATION_NAME,store);
 		db.insert("items", DbHelper.PRODUCT, content);
 		db.close();
 	}
+    
+    public void deleteProductFromDB(String product){
+		db = dbHelper.getWritableDatabase();
+		String[] products={product};
+		db.delete("items",DbHelper.PRODUCT+"=?",products);
+		db.close();
+    }
+    
+    public ArrayList<String> getAllProducts(){
+    	toDoItems=new ArrayList<String>();
+    	String query="SELECT * FROM items";
+    	db=dbHelper.getWritableDatabase();
+    	Cursor cursor=db.rawQuery(query,null);
+    	if(cursor.moveToFirst()){
+    		do{
+    			product=new Item();
+    			product.setId(Integer.parseInt(cursor.getString(0)));
+    			product.setProduct(cursor.getString(1));
+    			product.setQuantity(Integer.parseInt(cursor.getString(2)));
+    			product.setLocation(cursor.getString(3));
+    			toDoItems.add(cursor.getString(1));
+    		}while(cursor.moveToNext());	
+    	}
+    	return toDoItems;
+    }
     
 }
