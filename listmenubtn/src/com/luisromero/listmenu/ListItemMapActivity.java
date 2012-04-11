@@ -21,8 +21,11 @@ public class ListItemMapActivity extends MapActivity{
 	private MapMarkerOverlay mapOverlay;
 	private MyLocationOverlay me=null; //google own library class.
 	private List<Overlay> mapOverlays;
-	private Drawable drawable;
+	private Drawable location_me;
 	private OverlayItem overlayItem;
+	Bundle bundle;
+	String location_name;
+	String location_product;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,22 +35,41 @@ public class ListItemMapActivity extends MapActivity{
         //mapView.setOnTouchListener((OnTouchListener) this);
         mapView.setBuiltInZoomControls(true);
 
-        point = new GeoPoint(37779300, -122419200);//san francisco   
-        GeoPoint point1 = new GeoPoint(37778313,-122419607);
+        point = new GeoPoint(37779300, -122419200);// my default location in San Francisco   
+        GeoPoint traderjoes = new GeoPoint(37771885,-122420119);
+        GeoPoint safeway=new GeoPoint(37778804,-122416945);
+        GeoPoint wholefood=new GeoPoint(37780654,-122423703);
+        GeoPoint lucky=new GeoPoint(37784893,-122419707);
+        
         mc = mapView.getController();
         mc.setCenter(point);
         mc.setZoom(13);
         mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(R.drawable.cart_push); //picture to show for points
-       
-        mapOverlay = new MapMarkerOverlay(drawable,mapView); // to pass the mapView context.
-        
-        overlayItem = new OverlayItem(point, "Hello there!", "This is San Francisco Civic Center!");
-        
+        location_me = this.getResources().getDrawable(R.drawable.my_location); //picture to show for points
+        mapOverlay = new MapMarkerOverlay(location_me,mapView); // to pass the mapView context.
+        overlayItem = new OverlayItem(point, "You are here! ", "-current location");
         mapOverlay.addOverlay(overlayItem);
         mapOverlays.add(mapOverlay);
         
-        mapOverlay.addOverlay(new OverlayItem(point1,"Hello There", "This is the second location test"));
+        
+        bundle=getIntent().getExtras();
+        //this.location_product=(String)bundle.get("productName");
+        this.location_name=(String)bundle.get("storeLocation");
+        
+        if(this.location_name.equals("SafeWay")){
+        	mapOverlay.addOverlay(new OverlayItem(safeway,"Store: ", "SafeWay" ));
+        }else if(this.location_name.equals("Whole Foods")){
+        	mapOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
+        	
+        }else if(this.location_name.equals("Luckys")){
+        	mapOverlay.addOverlay(new OverlayItem(lucky,"Store: ", "Luckys"));
+        	
+        }else if(this.location_name.equals("Trader Joes")){
+        	mapOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
+        }
+        
+        //mapOverlay.addOverlay(new OverlayItem(safeway,"Store", "SafeWay" ));
+        //mapOverlay.addOverlay(new MapDirectionPathOverlay(point,lucky));
         
         me=new MyLocationOverlay(this, mapView);
         mapOverlays.add(me);
@@ -71,5 +93,4 @@ public class ListItemMapActivity extends MapActivity{
 		me.disableMyLocation();
 		me.disableCompass();
 	}
-    
 }

@@ -6,21 +6,37 @@ package com.luisromero.listmenu;
  * 
  * */
 
-public class ListItem {
+public class Item {
 	/*
 	 * The following variables immitate the SQLite db' (item) table.
 	 * 
 	 * */
-	private long id; //Key and auto-increment in DB
+	private int id; //Key and auto-increment in DB
 	private String product;
-	private long quantity;
-	private String location;
+	private int quantity;
+	private String store;
+	
+	//Empty Constructor
+	public Item(){
+		
+	}
+	
+	public Item(int id, String product,int quantity){
+		this.id=id;
+		this.product=product;
+		this.quantity=quantity;
+	}
+	
+	public Item(String product,int quantity){
+		this.product=product;
+		this.quantity=quantity;
+	}
 	
 	public long getId(){
 		return this.id;
 	}
 	
-	public void setId(long id){
+	public void setId(int id){
 		this.id=id;
 	}
 	
@@ -32,20 +48,20 @@ public class ListItem {
 		this.product=product;
 	}
 	
-	public long getQuantity(){
+	public int getQuantity(){
 		return this.quantity;
 	}
 	
-	public void setQuantity(long quantity){
+	public void setQuantity(int quantity){
 		this.quantity=quantity;
 	}
 	
 	public String getLocation(){
-		return this.location;
+		return this.store;
 	}
 	
-	public void setLocation(String location){
-		this.location=location;
+	public void setLocation(String storeName){
+		this.store=storeName;
 	}
 	
 	/* Will be used by the ArrayAdapter to 

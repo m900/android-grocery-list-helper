@@ -22,7 +22,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_SCHEMA=1;
 	
 	public static final String PRODUCT="product";
-	public static final String LOCATION_NAME="location";
+	public static final String LOCATION="location";
 	public static final String QUANTITY="quantity";
 	public static final String C_LAT="c_lat";
 	public static final String C_LON="c_lon";
@@ -34,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, product VARCHAR(35), quantity INTEGER);");
+		db.execSQL("CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, product VARCHAR(35), quantity INTEGER, location VARCHAR(35));");
 		//db.execSQL("CREATE TABLE location (_id INTEGER PRIMARY KEY AUTOINCREMENT, location VARCHAR(40), c_lon INTEGER, c_lat INTEGER);");
 		//db.execSQL("CREATE TABLE locationStock(_id INTEGER, product VARCHAR(35), quantity INTEGER, inStock INTEGER);");
 		Log.d("DbHelper","onCreate - table name created");

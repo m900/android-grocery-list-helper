@@ -58,25 +58,27 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	 * */
 	 @Override
      public boolean onTouchEvent(MotionEvent event, MapView mapView) 
-     {   // To show the latitude and longitude of Touched location on map.
+     {
+		return false;   // To show the latitude and longitude of Touched location on map.
          //---when user lifts his finger---
-         if (event.getAction() == 1) {                
+         /*
+		 if (event.getAction() == 1) {                
              GeoPoint p = mapView.getProjection().fromPixels(
                  (int) event.getX(),
                  (int) event.getY());
              String place ="";
              place+=p.getLatitudeE6()/1E6 + "," + p.getLongitudeE6()/1E6;
-             /*
+             
                  Toast.makeText(mapView.getContext(), 
                      p.getLatitudeE6() / 1E6 + "," + 
                      p.getLongitudeE6() /1E6 , 
                      Toast.LENGTH_SHORT).show();
-                 */
-                 this.addOverlay(new OverlayItem(p,"Hello There", place));
+                 
+                 //this.addOverlay(new OverlayItem(p,"Hello There", place));
                  
          }
 		return false;                            
-         
+         */
 		 //---when user lifts his finger---
 		 
 		 /*
