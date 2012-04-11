@@ -19,7 +19,7 @@ public class MapDirectionPathOverlay extends Overlay {
         this.gp1 = gp1;
         this.gp2 = gp2;
     }
-
+    
     @Override
     public boolean draw(Canvas canvas, MapView mapView, boolean shadow,
             long when) {
