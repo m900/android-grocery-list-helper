@@ -4,13 +4,20 @@ package com.luisromero.listmenu;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.widget.Toast;
-import com.google.android.maps.GeoPoint;
+
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
+import com.google.android.maps.Projection;
 
 public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	private List<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
@@ -47,6 +54,29 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	  message+=item.getTitle()+item.getSnippet();
 	  Toast.makeText(mapView.getContext(),message , Toast.LENGTH_SHORT).show();
 	  return true;
+	}
+	
+	
+	public void draw(Canvas canvas, MapView map, boolean shadow){
+
+	    super.draw(canvas, map, shadow);
+	    Paint mPaint = new Paint();
+	    mPaint.setDither(true);
+	    mPaint.setColor(Color.RED);
+	    mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+	    mPaint.setStrokeJoin(Paint.Join.ROUND);
+	    mPaint.setStrokeCap(Paint.Cap.ROUND);
+	    mPaint.setStrokeWidth(2);
+
+	    Point p1 = new Point();
+	    Point p2 = new Point();
+	    Path path = new Path();
+	    Projection projection = map.getProjection();
+	    projection.toPixels(mOverlays.get(0).getPoint(), p1);
+	    projection.toPixels(mOverlays.get(1).getPoint(), p2);
+	    path.moveTo(p2.x, p2.y);
+	    path.moveTo(p1.x, p1.y);
+	    canvas.drawPath(path, mPaint);
 	}
 	
 	

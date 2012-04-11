@@ -31,13 +31,14 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     EditText txtItem;
 	Button btnAdd;
 	ListView listItems;
-	
+	ArrayList<Item> products;
 	DbHelper dbHelper;
 	SQLiteDatabase db;
 	
 	ArrayList<String> toDoItems;
 	ArrayAdapter<String> aa;
 	Item product;
+	Item item;
 	
 	String item_location;
 	String item_name;
@@ -92,6 +93,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         
         toDoItems = this.getAllProducts();
         locations=new ArrayList<String>();
+        products=new ArrayList<Item>(); // add item objects to an array list for easier location mapping
         
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
         listItems.setAdapter(aa);
@@ -275,11 +277,12 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     	Cursor cursor=db.rawQuery(query,null);
     	if(cursor.moveToFirst()){
     		do{
-    			product=new Item();
-    			product.setId(Integer.parseInt(cursor.getString(0)));
-    			product.setProduct(cursor.getString(1));
-    			product.setQuantity(Integer.parseInt(cursor.getString(2)));
-    			product.setLocation(cursor.getString(3));
+    			item=new Item();
+    			item.setId(Integer.parseInt(cursor.getString(0)));
+    			item.setProduct(cursor.getString(1));
+    			item.setQuantity(Integer.parseInt(cursor.getString(2)));
+    			item.setLocation(cursor.getString(3));
+    			products.add(item); //adding items also to the ArrayList of items
     			toDoItems.add(cursor.getString(1));
     		}while(cursor.moveToNext());	
     	}
