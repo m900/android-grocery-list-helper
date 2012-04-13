@@ -13,9 +13,8 @@ public class Item {
 	 * */
 	private int id; //Key and auto-increment in DB
 	private String product;
-	private int quantity;
 	private String store;
-	
+	private int quantity;
 	//Empty Constructor
 	public Item(){
 		
@@ -32,7 +31,7 @@ public class Item {
 		this.quantity=quantity;
 	}
 	
-	public long getId(){
+	public int getId(){
 		return this.id;
 	}
 	
