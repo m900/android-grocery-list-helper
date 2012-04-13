@@ -68,7 +68,6 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 	
 	@Override
 	public void finish() {
-		// Prepare data intent 
 		this.productName=txtProductName.getText().toString();
 		this.productQuantity=txtProductQuantity.getText().toString().trim();
 		Intent data = new Intent();
@@ -85,9 +84,8 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 		
 	}
 
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onNothingSelected(AdapterView<?> adapter) {
+		this.productLocation=adapter.getItemAtPosition(0).toString();
 	}
 	
 }

@@ -31,14 +31,14 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     EditText txtItem;
 	Button btnAdd;
 	ListView listItems;
-	ArrayList<Item> products;
+	
 	DbHelper dbHelper;
 	SQLiteDatabase db;
 	
 	ArrayList<String> toDoItems;
 	ArrayAdapter<String> aa;
-	Item product;
-	Item item;
+	ArrayList<Item> items; //list of Item objects
+	Item product; // Item object - product in the list
 	
 	String item_location;
 	String item_name;
@@ -88,12 +88,11 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         
         btnAdd.setOnClickListener(this);
         txtItem.setOnClickListener(this);
-        dbHelper = new DbHelper(this);
+        dbHelper = new DbHelper(this); // not sure if this is a good idea/ it runs multiple times or something..
         db=dbHelper.getWritableDatabase();
-        
         toDoItems = this.getAllProducts();
         locations=new ArrayList<String>();
-        products=new ArrayList<Item>(); // add item objects to an array list for easier location mapping
+        //items=new ArrayList<Item>(); // add item objects to an array list for easier location mapping
         
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
         listItems.setAdapter(aa);
@@ -119,12 +118,16 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Edit item was clicked");
     		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
-    		String productName = (String)listItems.getItemAtPosition(getPosItem());
-    		String quantity="";
+    		
+    		//Toast.makeText(getApplicationContext(),"Size of items list is: "+ items.size(), Toast.LENGTH_SHORT).show();
+    		Item selectedItem =items.get(getPosItem());
+    		String productName=selectedItem.getProduct();
+    		int productQuantity=selectedItem.getQuantity();
     		Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
 			intent.putExtra("productName",productName);
-			intent.putExtra("productQuantity", quantity);	
+			intent.putExtra("productQuantity", Integer.toString(productQuantity));	
 			startActivityForResult(intent, 2);
+			
     	
     	}else if(item.getItemId()==R.id.item3){
     		//Log.d("Option","Delete item was clicked");
@@ -174,6 +177,9 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 			setPosItem(position);
 			setViewItem(view);
 			setIsSomeItemChecked(true);
+			Item current=items.get(getPosItem());
+			
+			Toast.makeText(getApplicationContext(),"position is: "+ getPosItem() +" _id:"+current.getId()+" name:"+current.getProduct(), Toast.LENGTH_SHORT).show();
 		}else if(getIsSomeItemChecked()==true && position==getPosItem()){
 			ListTextView.setChecked(false);
 			setIsSomeItemChecked(false);
@@ -190,11 +196,8 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     
     private void deleteItem(int itemId){
     	if(itemId >=0){
-    		//For toast message delete
     		String itemName = (String)listItems.getItemAtPosition(itemId);
-    		
     		this.toDoItems.remove(itemId);
-    		//this.locations.remove(getPosItem()-1);
     		this.deleteProductFromDB(itemName);
     		aa.notifyDataSetChanged();
     		this.txtItem.setText("");
@@ -220,47 +223,50 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 	}
     
     @Override 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {     
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	
     	 if (resultCode == RESULT_OK && requestCode==1) { 
     		 if(data.hasExtra("producName")){
     			 String productName=data.getExtras().getString("producName");
     			 int productQuantity=Integer.parseInt(data.getExtras().getString("productQuantity"));
     			 item_location=data.getExtras().getString("productLocation");
-    			 locations.add(item_location);
-    			 
+    			 locations.add(item_location);//LOCATION
     			 this.addItem(productName);
     			 this.insertProductToDB(productName, productQuantity, item_location);
     		 }
          }else if(resultCode == RESULT_OK && requestCode==2){
         	 if(data.hasExtra("productName") && data.hasExtra("productQuantity")){
+        		 int id=items.get(getPosItem()).getId();
         		 String productName=data.getExtras().getString("producName");
     			 int productQuantity=Integer.parseInt(data.getExtras().getString("productQuantity"));
-        		 this.updateProductToDB(productName,productQuantity);
+        		 this.updateProductToDB(id,productName,productQuantity);
+        			 Toast.makeText(getApplicationContext(), "values changed: "+ productName +" "+ productQuantity, Toast.LENGTH_SHORT).show();
         	 }
-        	 
          }
     }
     
-    private int updateProductToDB(String product, int quantity) {
+    private void updateProductToDB(int id, String product, int quantity) {
 		db=dbHelper.getWritableDatabase();
-		String[] products={product};
+		String[] _id={Integer.toString(id)};
 		ContentValues content = new ContentValues();
 		content.put(DbHelper.PRODUCT,product);
 		content.put(DbHelper.QUANTITY,quantity);
-		return db.update("items", content,DbHelper.PRODUCT+"=?",products);
+		db.update("items", content,DbHelper._ID+"=?",_id);
+		db.close();
 	}
 
 	public void insertProductToDB(String product, int quantity, String location){
-		
 		db = dbHelper.getWritableDatabase();
-		
 		ContentValues content = new ContentValues();
 		content.put(DbHelper.PRODUCT,product);
 		content.put(DbHelper.QUANTITY,quantity);
 		content.put(DbHelper.LOCATION,location);
 		//content.put(DbHelper.LOCATION_NAME,store);
-		db.insert("items", DbHelper.PRODUCT, content);
+		db.insert("items",DbHelper.PRODUCT,content);
 		db.close();
+		//First add it to DB - get the new info on the DB and added to the Items object list
+		this.product=getNewDbEntry();
+		this.items.add(this.product);
 	}
     
     public void deleteProductFromDB(String product){
@@ -271,22 +277,50 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     }
     
     public ArrayList<String> getAllProducts(){
-    	toDoItems=new ArrayList<String>();
+    	this.items=new ArrayList<Item>();
+    	this.toDoItems=new ArrayList<String>();
+    	this.db=dbHelper.getWritableDatabase();
     	String query="SELECT * FROM items";
-    	db=dbHelper.getWritableDatabase();
     	Cursor cursor=db.rawQuery(query,null);
+    	int id=0;
+    	int quantity=0;
     	if(cursor.moveToFirst()){
     		do{
-    			item=new Item();
-    			item.setId(Integer.parseInt(cursor.getString(0)));
-    			item.setProduct(cursor.getString(1));
-    			item.setQuantity(Integer.parseInt(cursor.getString(2)));
-    			item.setLocation(cursor.getString(3));
-    			products.add(item); //adding items also to the ArrayList of items
+    			this.product=new Item();
+    			id=Integer.parseInt(cursor.getString(0));
+    		    quantity=Integer.parseInt(cursor.getString(2));
+    			this.product.setId(id);
+    			this.product.setProduct(cursor.getString(1));
+    			this.product.setQuantity(quantity);
+    			this.product.setLocation(cursor.getString(3));
+    			this.items.add(this.product); //adding items also to the ArrayList of items
     			toDoItems.add(cursor.getString(1));
     		}while(cursor.moveToNext());	
     	}
+    	cursor.close();
+    	db.close();
     	return toDoItems;
+    }
+    
+    /* This gets the lates DB Items table entry - to get the id and other 
+     * 
+     * information and update it on the Item object List
+     * 
+     */
+    public Item getNewDbEntry(){
+    	this.product=new Item();
+    	this.db=dbHelper.getWritableDatabase();
+    	String query="SELECT * FROM items";
+    	Cursor cursor=db.rawQuery(query,null);
+    	if(cursor.moveToLast()){
+    		this.product.setId(Integer.parseInt(cursor.getString(0)));
+    		this.product.setProduct(cursor.getString(1));
+    		this.product.setQuantity(Integer.parseInt(cursor.getString(2)));
+    		this.product.setLocation(cursor.getString(3));
+    	}
+    	cursor.close();
+    	db.close();
+    	return this.product;
     }
     
 }
