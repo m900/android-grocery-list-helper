@@ -20,7 +20,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	private static final String DATABASE_NAME= "list";
 	private static final int DATABASE_SCHEMA=1;
-	public static final String _ID="_id";
+	public static final String ID="_id";
 	public static final String PRODUCT="product";
 	public static final String LOCATION="location";
 	public static final String QUANTITY="quantity";

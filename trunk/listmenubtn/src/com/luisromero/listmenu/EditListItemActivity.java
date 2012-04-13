@@ -25,7 +25,7 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 	ArrayAdapter<CharSequence> spinnerAdapter;
 	private String productName;
 	private String productQuantity;
-	private String productLocation;
+	private String productStore;
 	private Bundle bundle;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,21 +71,21 @@ public class EditListItemActivity extends Activity implements OnClickListener, O
 		this.productName=txtProductName.getText().toString();
 		this.productQuantity=txtProductQuantity.getText().toString().trim();
 		Intent data = new Intent();
-		data.putExtra("producName", this.productName);
+		data.putExtra("productName", this.productName);
 		data.putExtra("productQuantity", this.productQuantity);
-		data.putExtra("productLocation", this.productLocation);
+		data.putExtra("productStore", this.productStore);
 		setResult(RESULT_OK,data);
 		super.finish();
 	}
 
 	public void onItemSelected(AdapterView<?> adapter, View arg1, int position,
 			long arg3) {
-		this.productLocation=adapter.getItemAtPosition(position).toString();
+		this.productStore=adapter.getItemAtPosition(position).toString();
 		
 	}
 
 	public void onNothingSelected(AdapterView<?> adapter) {
-		this.productLocation=adapter.getItemAtPosition(0).toString();
+		this.productStore=adapter.getItemAtPosition(0).toString();
 	}
 	
 }
