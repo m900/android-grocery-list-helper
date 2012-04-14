@@ -42,7 +42,6 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 	
 	String item_location;
 	String item_name;
-	ArrayList<String> locations;
 	
 	int posItem=0;
     View viewItem;
@@ -91,7 +90,6 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         dbHelper = new DbHelper(this); // not sure if this is a good idea/ it runs multiple times or something..
         db=dbHelper.getWritableDatabase();
         toDoItems = this.getAllProducts();
-        locations=new ArrayList<String>();
         //items=new ArrayList<Item>(); // add item objects to an array list for easier location mapping
         
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
@@ -111,6 +109,8 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     	if(item.getItemId()==R.id.item1){
     		//TO-DO// Sends user to a map where a store location is showed- item can be bought there.
     		Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
+    		Item selectedItem=items.get(getPosItem());
+    		this.item_location=selectedItem.getLocation();
     		intent.putExtra("storeLocation", this.item_location);
     		startActivity(intent);
     		
@@ -237,10 +237,9 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		 if(data.hasExtra("productName")){
     			 String productName=data.getExtras().getString("productName");
     			 int productQuantity=Integer.parseInt(data.getExtras().getString("productQuantity"));
-    			 item_location=data.getExtras().getString("productLocation");
-    			 locations.add(item_location);//LOCATION
+    			 this.item_location=data.getExtras().getString("productStore").trim();
     			 this.addItem(productName);
-    			 this.insertProductToDB(productName, productQuantity, item_location);
+    			 this.insertProductToDB(productName, productQuantity, this.item_location);
     		 }
          }
     	 /* To edit list entries */
