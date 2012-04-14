@@ -3,12 +3,13 @@
     package="com.luisromero.listmenu"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
+       
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name" >
@@ -20,7 +21,7 @@
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".AddListItemActivity"></activity>
         <activity android:name=".EditListItemActivity"></activity>
-        <activity android:name=".SplashScreen"></activity>
+       
         <activity android:name=".ListItemMapActivity"></activity>
        <uses-library android:name="com.google.android.maps"/>
     </application>

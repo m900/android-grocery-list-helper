@@ -42,6 +42,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 	
 	String item_location;
 	String item_name;
+	String item_quantity;
 	
 	int posItem=0;
     View viewItem;
@@ -107,30 +108,53 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
-    		//TO-DO// Sends user to a map where a store location is showed- item can be bought there.
-    		Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
-    		Item selectedItem=items.get(getPosItem());
-    		this.item_location=selectedItem.getLocation();
-    		intent.putExtra("storeLocation", this.item_location);
-    		startActivity(intent);
+    		//Log.d("Option","Map item was clicked");
+    		// Sends user to a map where a store location is showed- item can be bought there.
+    		if(getIsSomeItemChecked()==true){
+    			
+    			
+    			Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
+        		Item selectedItem=items.get(getPosItem());
+        		this.item_location=selectedItem.getLocation();
+        		this.item_name=selectedItem.getProduct();
+        		this.item_quantity=Integer.toString(selectedItem.getQuantity());
+        		intent.putExtra("storeLocation", this.item_location);
+        		intent.putExtra("productName", this.item_name);
+        		intent.putExtra("productQuantity", this.item_quantity);
+        		
+        		setIsSomeItemChecked(false);
+    			CheckedTextView restartView=(CheckedTextView)viewItem;
+    			restartView.setChecked(false);
+    			
+        		startActivity(intent);
+    		}else{
+    			Toast.makeText(getApplicationContext(),"Select and item to show on Map", Toast.LENGTH_SHORT).show();
+    		}
     		
     	}else if(item.getItemId()==R.id.item2){
     		//Log.d("Option","Edit item was clicked");
-    		//startActivity(new Intent(MainActivity.this,AddListItemActivity.class));
-    		
     		//Toast.makeText(getApplicationContext(),"Size of items list is: "+ items.size(), Toast.LENGTH_SHORT).show();
-    		Item selectedItem =items.get(getPosItem());
-    		String productName=selectedItem.getProduct();
-    		int productQuantity=selectedItem.getQuantity();
-    		Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
-			intent.putExtra("productName",productName);
-			intent.putExtra("productQuantity", Integer.toString(productQuantity));	
-			startActivityForResult(intent, 2);
-			
-    	
+    		if(getIsSomeItemChecked()==true){
+    			
+    			
+    			Item selectedItem =items.get(getPosItem());
+        		String productName=selectedItem.getProduct();
+        		int productQuantity=selectedItem.getQuantity();
+        		Intent intent=new Intent(MainActivity.this,EditListItemActivity.class);
+    			intent.putExtra("productName",productName);
+    			intent.putExtra("productQuantity", Integer.toString(productQuantity));	
+    			
+    			setIsSomeItemChecked(false);
+    			CheckedTextView restartView=(CheckedTextView)viewItem;
+    			restartView.setChecked(false);
+    			
+    			startActivityForResult(intent, 2);
+    			
+    		}else{
+    			Toast.makeText(getApplicationContext(),"Select and item to edit", Toast.LENGTH_SHORT).show();
+    		}
     	}else if(item.getItemId()==R.id.item3){
     		//Log.d("Option","Delete item was clicked");
-    		//startActivity(new Intent(MainActivity.this,EditListItemActivity.class));
     		if(getIsSomeItemChecked()==true){
     			setIsSomeItemChecked(false);//restart
     			CheckedTextView restartView = (CheckedTextView)viewItem;
@@ -232,7 +256,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 	}
     
     @Override 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {    	
     	 if (resultCode == RESULT_OK && requestCode==1) { 
     		 if(data.hasExtra("productName")){
     			 String productName=data.getExtras().getString("productName");
