@@ -8,7 +8,7 @@
 
         <TextView
             android:id="@+id/lblEditProductTitle"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/lblEditProductTitle"
@@ -16,7 +16,7 @@
 
         <EditText
             android:id="@+id/txtProductName"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" 
             android:hint="@string/txtEditProductNameHint"
             >
@@ -26,7 +26,7 @@
 
         <EditText
             android:id="@+id/txtProductQuantity"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" 
             android:hint="@string/txtProductQuantityHint"
             />
@@ -39,20 +39,20 @@
 
         <Spinner
             android:id="@+id/ddLocation"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" 
             android:prompt="@string/storeNamesPrompt"
             />
 
         <Button
             android:id="@+id/btnSaveProductEdit"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnSaveProductEdit" />
 
         <Button
             android:id="@+id/btnCancel"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/cancelBtn" />
 

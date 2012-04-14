@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -23,11 +24,13 @@ public class ListItemMapActivity extends MapActivity{
 	//private MyLocationOverlay me=null; //google own library class.
 	private List<Overlay> mapOverlays;
 	private Drawable location_me;
+	private Drawable location_store;
 	private OverlayItem overlayItem;
 	Bundle bundle;
 	String storeName;
-	String location_product;
-	
+	String productName;
+	String productQuantity;
+	BalloonItemizedOverlay bOverlay;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,7 @@ public class ListItemMapActivity extends MapActivity{
         
         mapOverlays = mapView.getOverlays();
         location_me = this.getResources().getDrawable(R.drawable.my_location); //picture to show for points
+        location_store=this.getResources().getDrawable(R.drawable.cart_push);
         mapOverlay = new MapMarkerOverlay(location_me,mapView); // to pass the mapView context.
         overlayItem = new OverlayItem(point, "You are here! ", "-current location");
         mapOverlay.addOverlay(overlayItem);
@@ -55,17 +59,25 @@ public class ListItemMapActivity extends MapActivity{
         bundle=getIntent().getExtras();
         //this.location_product=(String)bundle.get("productName");
         this.storeName=(String)bundle.get("storeLocation");
+        this.productName=(String)bundle.get("productName");
+        this.productQuantity=(String)bundle.get("productQuantity");
+        //mapOverlays=mapView.getOverlays();
+        bOverlay=new BalloonItemizedOverlay(location_store,mapView);
         
         if(this.storeName.equals("SafeWay")){
+        	//bOverlay.addOverlay(new OverlayItem(safeway,"Store: ", "SafeWay" ));
         	mapOverlay.addOverlay(new OverlayItem(safeway,"Store: ", "SafeWay" ));
         	path.add(safeway);
         }else if(this.storeName.equals("Whole Foods")){
+        	//bOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
         	mapOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
         	path.add(wholefood);
         }else if(this.storeName.equals("Luckys")){
+        	//bOverlay.addOverlay(new OverlayItem(lucky,"Store: ", "Luckys"));
         	mapOverlay.addOverlay(new OverlayItem(lucky,"Store: ", "Luckys"));
         	path.add(lucky);
         }else if(this.storeName.equals("Trader Joes")){
+        	//bOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
         	mapOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
         	path.add(traderjoes);
         }
@@ -75,8 +87,15 @@ public class ListItemMapActivity extends MapActivity{
         
        // me=new MyLocationOverlay(this, mapView);
        // mapOverlays.add(me);
-        
+       
+        bOverlay.addOverlay(new OverlayItem(lucky, "Store: Luckys", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
+        //path.add(lucky);
         mapOverlays.add(new RoutePathOverlay(path));
+        
+        mapOverlays = mapView.getOverlays();
+        
+        mapOverlays.add(bOverlay);
+        
         mc = mapView.getController();
         mc.animateTo(point);
         mc.setCenter(point);
@@ -101,4 +120,13 @@ public class ListItemMapActivity extends MapActivity{
 		//me.disableMyLocation();
 		//me.disableCompass();
 	}
+	
+	 @Override
+     public boolean onKeyDown(int keyCode, KeyEvent event) {
+             if ((keyCode == KeyEvent.KEYCODE_BACK) && (bOverlay.hideBalloon())) {
+                     return true;
+             }
+             return super.onKeyDown(keyCode, event);
+     }
+	
 }
