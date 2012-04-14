@@ -2,8 +2,10 @@ package com.luisromero.listmenu;
 
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,9 +13,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
@@ -89,26 +94,40 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	 @Override
      public boolean onTouchEvent(MotionEvent event, MapView mapView) 
      {
-		return false;   // To show the latitude and longitude of Touched location on map.
+		// To show the latitude and longitude of Touched location on map.
          //---when user lifts his finger---
-         /*
+         
 		 if (event.getAction() == 1) {                
              GeoPoint p = mapView.getProjection().fromPixels(
                  (int) event.getX(),
                  (int) event.getY());
-             String place ="";
-             place+=p.getLatitudeE6()/1E6 + "," + p.getLongitudeE6()/1E6;
-             
+             //String place ="";
+             //place+=p.getLatitudeE6()/1E6 + "," + p.getLongitudeE6()/1E6;
+             /*
                  Toast.makeText(mapView.getContext(), 
                      p.getLatitudeE6() / 1E6 + "," + 
                      p.getLongitudeE6() /1E6 , 
                      Toast.LENGTH_SHORT).show();
-                 
+              */
+             Geocoder geocoder=new Geocoder(mapView.getContext(),Locale.getDefault()); 
+             try{
+            	 List<Address> address = geocoder.getFromLocation(p.getLatitudeE6()/1E6, p.getLongitudeE6()/1E6, 1);
+            	 if(address.size()>0){
+            		 String display ="";
+            		 for(int i=0;i<address.get(0).getMaxAddressLineIndex();i++){
+            			 
+            			 display+=address.get(0).getAddressLine(i)+"\n";
+            		 }
+            		 Toast.makeText(mapView.getContext(), display, Toast.LENGTH_SHORT).show();
+            	 }
+             }catch(IOException e){
+            	 e.printStackTrace();
+             }
                  //this.addOverlay(new OverlayItem(p,"Hello There", place));
                  
          }
 		return false;                            
-         */
+         
 		 //---when user lifts his finger---
 		 
 		 /*

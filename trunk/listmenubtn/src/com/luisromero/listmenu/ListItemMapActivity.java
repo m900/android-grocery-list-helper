@@ -24,7 +24,7 @@ public class ListItemMapActivity extends MapActivity{
 	private Drawable location_me;
 	private OverlayItem overlayItem;
 	Bundle bundle;
-	String location_name;
+	String storeName;
 	String location_product;
 	
 	@Override
@@ -41,9 +41,7 @@ public class ListItemMapActivity extends MapActivity{
         GeoPoint wholefood=new GeoPoint(37780654,-122423703);
         GeoPoint lucky=new GeoPoint(37784893,-122419707);
         
-        mc = mapView.getController();
-        mc.setCenter(point);
-        mc.setZoom(13);
+        
         mapOverlays = mapView.getOverlays();
         location_me = this.getResources().getDrawable(R.drawable.my_location); //picture to show for points
         mapOverlay = new MapMarkerOverlay(location_me,mapView); // to pass the mapView context.
@@ -54,25 +52,30 @@ public class ListItemMapActivity extends MapActivity{
         
         bundle=getIntent().getExtras();
         //this.location_product=(String)bundle.get("productName");
-        this.location_name=(String)bundle.get("storeLocation");
+        this.storeName=(String)bundle.get("storeLocation");
         
-        if(this.location_name.equals("SafeWay")){
+        if(this.storeName.equals("SafeWay")){
         	mapOverlay.addOverlay(new OverlayItem(safeway,"Store: ", "SafeWay" ));
-        }else if(this.location_name.equals("Whole Foods")){
+        }else if(this.storeName.equals("Whole Foods")){
         	mapOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
         	
-        }else if(this.location_name.equals("Luckys")){
+        }else if(this.storeName.equals("Luckys")){
         	mapOverlay.addOverlay(new OverlayItem(lucky,"Store: ", "Luckys"));
         	
-        }else if(this.location_name.equals("Trader Joes")){
+        }else if(this.storeName.equals("Trader Joes")){
         	mapOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
         }
         
         //mapOverlay.addOverlay(new OverlayItem(safeway,"Store", "SafeWay" ));
         //mapOverlay.addOverlay(new MapDirectionPathOverlay(point,lucky));
         
-        me=new MyLocationOverlay(this, mapView);
-        mapOverlays.add(me);
+       // me=new MyLocationOverlay(this, mapView);
+       // mapOverlays.add(me);
+        
+        mc = mapView.getController();
+        mc.animateTo(point);
+        mc.setCenter(point);
+        mc.setZoom(16);
     }
 
     @Override
@@ -83,14 +86,14 @@ public class ListItemMapActivity extends MapActivity{
     @Override
 	protected void onResume() {
 		super.onResume();
-		me.enableMyLocation();
-		me.enableCompass();
+		//me.enableMyLocation();
+		//me.enableCompass();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onResume();
-		me.disableMyLocation();
-		me.disableCompass();
+		//me.disableMyLocation();
+		//me.disableCompass();
 	}
 }

@@ -12,7 +12,7 @@
     <string name="okBtn">OK</string>
     <string name="acceptBtn">Accept</string>
     <string name="txtProductQuantityHint">Product Quantity</string>
-    <string name="lblProductInStock">In Stock:</string>
+    <string name="lblProductInStock">Store of choice:</string>
     <string name="btnSaveProductEdit">Save to list</string>
     <string name="storeNamesPrompt">Choose a store</string>
     <string-array name="storeNames">
