@@ -5,6 +5,16 @@
 This journal is specified to follow the progress of the development of the android application.
 
 (UPDATES)!!
+= Details for 4/17/2012 =
+*Added a route -path overlay between two points.
+
+*Added an improved look to the Balloon tip of the stores selected.
+
+*Installed - demo in an Android-cellphone - successfully working.
+
+*Next improvement: Improve the Balloon tip for items with the store address and maybe a logo (.PNG) showing once the BalloonTipItemizedOverlay shows in the MapView.
+
+
 = Details for 4/10/2012 =
 *Researched Reverse-geocoding on Google API to gather the location name- providing the longitude- and latitude gathered real time.
 
