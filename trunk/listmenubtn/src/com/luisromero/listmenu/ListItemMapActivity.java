@@ -24,13 +24,13 @@ public class ListItemMapActivity extends MapActivity{
 	//private MyLocationOverlay me=null; //google own library class.
 	private List<Overlay> mapOverlays;
 	private Drawable location_me;
-	private Drawable location_store;
+	//private Drawable location_store;
 	private OverlayItem overlayItem;
 	Bundle bundle;
 	String storeName;
 	String productName;
 	String productQuantity;
-	BalloonItemizedOverlay bOverlay;
+	private MapMarkerOverlay bOverlay;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,53 +48,78 @@ public class ListItemMapActivity extends MapActivity{
         
         mapOverlays = mapView.getOverlays();
         location_me = this.getResources().getDrawable(R.drawable.my_location); //picture to show for points
-        location_store=this.getResources().getDrawable(R.drawable.cart_push);
+        //location_store=this.getResources().getDrawable(R.drawable.cart_push);
         mapOverlay = new MapMarkerOverlay(location_me,mapView); // to pass the mapView context.
-        overlayItem = new OverlayItem(point, "You are here! ", "-current location");
+        overlayItem = new OverlayItem(point, "You are here! ", "current location");
         mapOverlay.addOverlay(overlayItem);
         mapOverlays.add(mapOverlay);
         
         ArrayList<GeoPoint> path=new ArrayList<GeoPoint>();
         path.add(point);
         bundle=getIntent().getExtras();
-        //this.location_product=(String)bundle.get("productName");
         this.storeName=(String)bundle.get("storeLocation");
         this.productName=(String)bundle.get("productName");
         this.productQuantity=(String)bundle.get("productQuantity");
-        //mapOverlays=mapView.getOverlays();
-        bOverlay=new BalloonItemizedOverlay(location_store,mapView);
+       
+       
+        //bOverlay=new MapMarkerOverlay(location_store,mapView);
+        
         
         if(this.storeName.equals("SafeWay")){
-        	//bOverlay.addOverlay(new OverlayItem(safeway,"Store: ", "SafeWay" ));
-        	mapOverlay.addOverlay(new OverlayItem(safeway,"Store: ", "SafeWay" ));
+        	//bOverlay.addOverlay(new OverlayItem(safeway, "Store: SafeWay", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
+        	mapOverlay.addOverlay(new OverlayItem(safeway, "Store: SafeWay", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
         	path.add(safeway);
+        	//mapOverlays = mapView.getOverlays();
         }else if(this.storeName.equals("Whole Foods")){
-        	//bOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
-        	mapOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
+        	//bOverlay.addOverlay(new OverlayItem(wholefood, "Store: Whole Foods", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
+        	mapOverlay.addOverlay(new OverlayItem(wholefood, "Store: Whole Foods", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
         	path.add(wholefood);
+        	//mapOverlays = mapView.getOverlays();
         }else if(this.storeName.equals("Luckys")){
-        	//bOverlay.addOverlay(new OverlayItem(lucky,"Store: ", "Luckys"));
-        	mapOverlay.addOverlay(new OverlayItem(lucky,"Store: ", "Luckys"));
+        	//bOverlay.addOverlay(new OverlayItem(lucky, "Store: Luckys", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
+        	mapOverlay.addOverlay(new OverlayItem(lucky, "Store: Luckys", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
         	path.add(lucky);
+        	//mapOverlays = mapView.getOverlays();
         }else if(this.storeName.equals("Trader Joes")){
-        	//bOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
-        	mapOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
+        	//bOverlay.addOverlay(new OverlayItem(traderjoes, "Store: Trader Joes", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
+        	mapOverlay.addOverlay(new OverlayItem(traderjoes, "Store: Trader Joes", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
         	path.add(traderjoes);
+        	//mapOverlays = mapView.getOverlays();
         }
-        
-        //mapOverlay.addOverlay(new OverlayItem(safeway,"Store", "SafeWay" ));
-        //mapOverlay.addOverlay(new MapDirectionPathOverlay(point,lucky));
-        
-       // me=new MyLocationOverlay(this, mapView);
-       // mapOverlays.add(me);
-       
-        bOverlay.addOverlay(new OverlayItem(lucky, "Store: Luckys", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
-        //path.add(lucky);
+		
+        //mapOverlay.addOverlay(new OverlayItem(wholefood,"Store: ", "Whole Foods"));
+        //mapOverlay.addOverlay(new OverlayItem(traderjoes,"Store: ", "Trader Joes"));
+        //bOverlay.addOverlay(new OverlayItem(traderjoes, "Store: Trader Joes", "Product: "+this.productName + "\nQuantity: "+this.productQuantity));
+        //path.add(traderjoes);
+        //mapOverlays.add(bOverlay);
         mapOverlays.add(new RoutePathOverlay(path));
+        //mapOverlays=mapView.getOverlays();
         
-        mapOverlays = mapView.getOverlays();
         
-        mapOverlays.add(bOverlay);
+        /*
+        //mapOverlays.add(bOverlay);
+        if(savedInstanceState==null){
+        	final MapController mc1= mapView.getController();
+        	mc1.animateTo(traderjoes);
+        	mc1.setZoom(16);
+        }else{
+        	int focused;
+        	focused=savedInstanceState.getInt("focused_1",-1);
+        	if(focused>=0){
+        		mapOverlay.setFocus(mapOverlay.getItem(focused));
+        	}
+        	focused=savedInstanceState.getInt("focused_2",-1);
+        	if(focused>=0){
+        		bOverlay.setFocus(bOverlay.getItem(focused));
+        	}
+        }
+        */
+        
+        /*
+         * problem lies in that mapOverlays can only handle one list of one kind of overlays with the icon at a time- }
+         * however it can be managed with focus- elements
+         * 
+         * */
         
         mc = mapView.getController();
         mc.animateTo(point);
@@ -121,6 +146,8 @@ public class ListItemMapActivity extends MapActivity{
 		//me.disableCompass();
 	}
 	
+	
+	
 	 @Override
      public boolean onKeyDown(int keyCode, KeyEvent event) {
              if ((keyCode == KeyEvent.KEYCODE_BACK) && (bOverlay.hideBalloon())) {
@@ -128,5 +155,4 @@ public class ListItemMapActivity extends MapActivity{
              }
              return super.onKeyDown(keyCode, event);
      }
-	
 }

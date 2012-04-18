@@ -16,6 +16,9 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -27,6 +30,10 @@ import com.google.android.maps.Projection;
 public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	private List<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	private MapView mapView;
+	private BalloonLayout balloonView;
+	private View clickRegion;
+	private int balloonViewOffset;
+	
 	
 	public MapMarkerOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker));
@@ -51,16 +58,62 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	@Override
 	protected boolean onTap(int index) {
 	  OverlayItem item = mOverlays.get(index);
-	  //AlertDialog.Builder dialog = new AlertDialog.Builder(this.mapView.getContext()); //needs a context - getContext();
-	  //dialog.setTitle(item.getTitle());
-	  //dialog.setMessage(item.getSnippet());
-	  //dialog.show();
+	 /*
 	  String message="";
 	  message+=item.getTitle()+item.getSnippet();
 	  Toast.makeText(mapView.getContext(),message , Toast.LENGTH_SHORT).show();
+	  */
+	  
+	  final int thisIndex = index;
+      final GeoPoint point = item.getPoint();
+	 
+	  boolean isRecycled = true;
+	  if (balloonView == null) {
+ 
+          balloonView = new BalloonLayout(mapView.getContext(), balloonViewOffset);
+          clickRegion = (View) balloonView.findViewById(R.id.balloon_inner_layout);
+          isRecycled = false;
+	  }
+	  balloonView.setVisibility(View.GONE);
+	  balloonView.setText(createItem(index).getTitle() + "\n" + createItem(index).getSnippet());
+	  
+      MapView.LayoutParams params = new MapView.LayoutParams(LayoutParams.WRAP_CONTENT,
+                      LayoutParams.WRAP_CONTENT, point, MapView.LayoutParams.BOTTOM_CENTER);
+      params.mode = MapView.LayoutParams.MODE_MAP;
+
+      clickRegion.setOnTouchListener(new OnTouchListener() {
+              public boolean onTouch(View arg0, MotionEvent arg1) {
+                      if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                              return onBalloonTap(thisIndex);
+                      }
+                      return true;
+              }
+
+      });
+
+      balloonView.setVisibility(View.VISIBLE);
+      if (isRecycled) {
+              balloonView.setLayoutParams(params);
+      } else {
+              mapView.addView(balloonView, params);
+      }
+      mapView.getController().animateTo(point);
+	 
 	  return true;
 	}
 	
+	 public boolean hideBalloon() {
+         if ((balloonView != null) && (balloonView.getVisibility() != View.GONE)) {
+                 balloonView.setVisibility(View.GONE);
+                 return true;
+         }
+         return false;
+	  }
+	  
+	  protected boolean onBalloonTap(int index) {
+         
+         return true;
+	  }
 	
 	public void draw(Canvas canvas, MapView map, boolean shadow){
 
