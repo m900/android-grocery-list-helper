@@ -30,7 +30,7 @@ public class BalloonItemizedOverlay extends ItemizedOverlay<OverlayItem>{
 	public BalloonItemizedOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker));
         this.mapView = mapView;
-        balloonViewOffset = defaultMarker.getIntrinsicHeight();
+        //balloonViewOffset = defaultMarker.getIntrinsicHeight();
         //populate();
 	}
 
