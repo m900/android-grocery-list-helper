@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+//import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,16 +29,17 @@ import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
 
 public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
-	private List<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
+	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	private MapView mapView;
 	private BalloonLayout balloonView;
 	private View clickRegion;
 	private int balloonViewOffset;
-	
+	//private Context context;
 	
 	public MapMarkerOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker));
 		this.mapView=mapView;
+		//this.context=mapView.getContext();
 	}
 
 	@Override
@@ -53,6 +55,12 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	public void addOverlay(OverlayItem overlay) {
 	    mOverlays.add(overlay);
 	    populate();
+	}
+	
+	public void addOverlay(OverlayItem overlay, Drawable setMarker) {
+		// add a custom drawable resource to the stores on the same mapOverlays list.
+		overlay.setMarker(boundCenterBottom(setMarker));
+		this.addOverlay(overlay);
 	}
 	
 	@Override
@@ -178,6 +186,10 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
              }       
          }
 		return false;                            
-     }        
+     }
+
+	
+
+	        
            
 }
