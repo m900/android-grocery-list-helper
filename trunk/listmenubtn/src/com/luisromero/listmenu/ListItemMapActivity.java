@@ -26,10 +26,10 @@ public class ListItemMapActivity extends MapActivity{
 	private Drawable location_me;
 	private Drawable location_store;
 	private OverlayItem overlayItem;
-	Bundle bundle;
-	String storeName;
-	String productName;
-	String productQuantity;
+	private Bundle bundle;
+	private String storeName;
+	private String productName;
+	private String productQuantity;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
