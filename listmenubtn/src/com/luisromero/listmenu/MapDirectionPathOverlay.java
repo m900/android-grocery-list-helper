@@ -44,5 +44,4 @@ public class MapDirectionPathOverlay extends Overlay {
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
         super.draw(canvas, mapView, shadow);
     }
-
 }

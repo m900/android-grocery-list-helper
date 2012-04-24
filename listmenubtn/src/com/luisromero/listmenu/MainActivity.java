@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -112,6 +111,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		//Log.d("Option","Map item was clicked");
     		// Sends user to a map where a store location is showed- item can be bought there.
     		if(getIsSomeItemChecked()==true){
+    			/*
     			String currentLatitude="37.779300";
     			String currentLongitude="-122.419200";
     			String fixedLatitude="37.780654";
@@ -120,8 +120,8 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
     			intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
     			startActivity(intent);
+    			*/
     			
-    			/*
     			Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
         		Item selectedItem=items.get(getPosItem());
         		this.item_location=selectedItem.getLocation();
@@ -134,7 +134,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     			CheckedTextView restartView=(CheckedTextView)viewItem;
     			restartView.setChecked(false);
         		startActivity(intent);
-        		*/
+        		
     		}else{
     			Toast.makeText(getApplicationContext(),"Select and item to show on Map", Toast.LENGTH_SHORT).show();
     		}
