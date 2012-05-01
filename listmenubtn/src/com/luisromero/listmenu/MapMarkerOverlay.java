@@ -2,10 +2,9 @@ package com.luisromero.listmenu;
 
 
 
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
 
 //import android.content.Context;
 import android.graphics.Canvas;
@@ -14,13 +13,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
@@ -157,19 +154,19 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
      {
 		// To show the latitude and longitude of Touched location on map.
          //---when user lifts his finger---
-         
+        /* 
 		 if (event.getAction() == 1) {                
              GeoPoint p = mapView.getProjection().fromPixels(
                  (int) event.getX(),
                  (int) event.getY());
              //String place ="";
              //place+=p.getLatitudeE6()/1E6 + "," + p.getLongitudeE6()/1E6;
-             /*
+             
                  Toast.makeText(mapView.getContext(), 
                      p.getLatitudeE6() / 1E6 + "," + 
                      p.getLongitudeE6() /1E6 , 
                      Toast.LENGTH_SHORT).show();
-              */
+              
              Geocoder geocoder=new Geocoder(mapView.getContext(),Locale.getDefault()); 
              try{
             	 List<Address> address = geocoder.getFromLocation(p.getLatitudeE6()/1E6, p.getLongitudeE6()/1E6, 1);
@@ -185,6 +182,7 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
             	 e.printStackTrace();
              }       
          }
+	 */
 		return false;                            
      }
 

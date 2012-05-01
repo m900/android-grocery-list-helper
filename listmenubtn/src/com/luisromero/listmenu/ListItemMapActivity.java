@@ -1,27 +1,41 @@
 package com.luisromero.listmenu;
 
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
+//import android.view.MenuInflater;
 import android.view.MenuItem;
+//mport android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -36,18 +50,22 @@ public class ListItemMapActivity extends MapActivity{
 	private MapController mc;
 	private MapView mapView;
 	private GeoPoint point;
+	private GeoPoint closestLocation;
 	//private LocationManager locationManager;
 	private MapMarkerOverlay mapOverlay;
 	//private MyLocationOverlay me=null; //google own library class.
 	private List<Overlay> mapOverlays;
 	private Drawable location_me;
 	private Drawable location_store;
+	private Drawable new_location_store;
+	private Drawable suggested_store;
 	private OverlayItem overlayItem;
 	private Bundle bundle;
 	private String storeName;
 	private String productName;
 	private String productQuantity;
-
+	private List<Location> nearPlaces;
+	private Location newPlace;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +83,8 @@ public class ListItemMapActivity extends MapActivity{
         mapOverlays = mapView.getOverlays();
         location_me = this.getResources().getDrawable(R.drawable.my_location); //picture to show for points
         location_store=this.getResources().getDrawable(R.drawable.cart_push);
+        new_location_store=this.getResources().getDrawable(R.drawable.cart_push_red);
+        suggested_store=this.getResources().getDrawable(R.drawable.cart_push_blue);
         mapOverlay = new MapMarkerOverlay(location_me,mapView); // to pass the mapView context.
         overlayItem = new OverlayItem(point, "You are here! ", "current location");
         mapOverlay.addOverlay(overlayItem);
@@ -77,8 +97,8 @@ public class ListItemMapActivity extends MapActivity{
         this.productName=(String)bundle.get("productName");
         this.productQuantity=(String)bundle.get("productQuantity");
              
-        if(this.storeName.equals("SafeWay")){
-        	mapOverlay.addOverlay(new OverlayItem(safeway, "Store: SafeWay", "Product: "+this.productName + "\nQuantity: "+this.productQuantity),location_store);
+        if(this.storeName.equals("Safeway")){
+        	mapOverlay.addOverlay(new OverlayItem(safeway, "Store: Safeway", "Product: "+this.productName + "\nQuantity: "+this.productQuantity),location_store);
         	dest=safeway;
         }else if(this.storeName.equals("Whole Foods")){
         	mapOverlay.addOverlay(new OverlayItem(wholefood, "Store: Whole Foods", "Product: "+this.productName + "\nQuantity: "+this.productQuantity),location_store);
@@ -110,8 +130,123 @@ public class ListItemMapActivity extends MapActivity{
 	    mc = mapView.getController();
 	    mc.setCenter(point);
 	    mc.setZoom(16);
-	    //mapView.invalidate();
+	    mapView.invalidate();
     }
+	
+	private List<Location> getPlacesData(GeoPoint start,String radius) throws JSONException{
+		 String sourceLat = Double.toString(start.getLatitudeE6()/1E6);
+	     String sourceLong = Double.toString(start.getLongitudeE6()/1E6);
+	     String searchRadius=radius;
+	     String googleAPIKey="AIzaSyAzKZWP0TWKRxqKC0ybVOp295EGl2Vb3W0";
+	     String urlString = "https://maps.googleapis.com/maps/api/place/search/json?location="+sourceLat+","+sourceLong+"&"+"radius="+searchRadius +"&types=grocery_or_supermarket&sensor=false"+"&"+"key="+googleAPIKey;
+	     String result="";
+	     List<Location> newStores=new ArrayList<Location>();
+	     GeoPoint store;
+	     String storeName="";
+	     String storeAddress="";
+	     HttpClient httpclient = new DefaultHttpClient();  
+         HttpGet request = new HttpGet(urlString);  
+         //request.addHeader("deviceId", deviceId);  
+         ResponseHandler<String> handler = new BasicResponseHandler();  
+         try {  
+             result = httpclient.execute(request, handler);  
+         } catch (ClientProtocolException e) {  
+             e.printStackTrace();  
+         } catch (IOException e) {  
+             e.printStackTrace();  
+         }  
+         httpclient.getConnectionManager().shutdown();  
+	     
+         JSONObject obj = new JSONObject(result);
+     	if((obj.getString("status")).equals("OK")){
+     		JSONArray array = obj.getJSONArray("results");
+     		int count = array.length();
+     		for(int i = 0; i < count; i++){
+     			JSONObject item = array.getJSONObject(i);
+     			JSONObject geometry = item.getJSONObject("geometry");
+     			JSONObject geo_Location = geometry.getJSONObject("location");
+     			Double lat = geo_Location.getDouble("lat");
+     			Double lng = geo_Location.getDouble("lng");
+     			storeAddress=item.getString("vicinity");
+     			store=new GeoPoint((int)(lat*1E6),(int)(lng*1E6));
+     			storeName = item.getString("name");
+     			//String address=reverseGeoPoint(store);
+     			//getPlacesDistance(start,store);
+     			Log.d("StoreName:"+storeName, storeAddress);
+     			newPlace=new Location(storeName,store,storeAddress);
+     			
+     			//JSONArray categoryList = item.getJSONArray("types");
+     			Log.d("placeLocation",storeAddress);
+     			newStores.add(newPlace);
+     			//Log.d("locationofbusiness", "new MyLocation(" + loc.getLatitude() + "," + loc.getLongitude() + "," + loc.getAddress() + ");");
+     			//Log.d("locationofbusiness", "" + busObject.getTimeToreachIntendedDestination());
+     		}
+     	}
+     	//peekNearByBusinessesMap.put(loc.getAddress(), BusinessList);
+     	//Log.d("List of businesses near the address" + loc.getAddress(), "BusinessList");
+     	
+         
+	     return newStores;
+	}
+	 private void getPlacesDistance(List<Location> nearPlaces) throws JSONException{
+		 String destinations="";
+		 String dest2="";
+		 for(int index=0;index<nearPlaces.size();index++){
+			 destinations+=Double.toString(nearPlaces.get(index).getCoordinates().getLatitudeE6()/1E6)+","+Double.toString(nearPlaces.get(index).getCoordinates().getLongitudeE6()/1E6)+"|";
+		 }
+		 
+		 Log.d("Destinations",destinations);
+		 
+		 String sourceLat = Double.toString(point.getLatitudeE6()/1E6);
+	     String sourceLong = Double.toString(point.getLongitudeE6()/1E6);
+	     
+	     String destLat = Double.toString(nearPlaces.get(0).getCoordinates().getLatitudeE6()/1E6);
+	     String destLong = Double.toString(nearPlaces.get(0).getCoordinates().getLongitudeE6()/1E6);
+	     dest2=destLat+","+destLong;
+	     
+	     //String googleAPIKey="AIzaSyAzKZWP0TWKRxqKC0ybVOp295EGl2Vb3W0";
+	     String urlString="https://maps.googleapis.com/maps/api/distancematrix/json?origins="+sourceLat+","+sourceLong+"&destinations="+dest2+"&mode=walking&language=en-EN&sensor=false";
+		 String distanceS="";
+		 String result="";
+		 HttpClient httpclient = new DefaultHttpClient();  
+         HttpGet request = new HttpGet(urlString);  
+         //request.addHeader("deviceId", deviceId);  
+         ResponseHandler<String> handler = new BasicResponseHandler();  
+         try {  
+             result = httpclient.execute(request, handler);  
+         } catch (ClientProtocolException e) {  
+             e.printStackTrace();  
+         } catch (IOException e) {  
+             e.printStackTrace();  
+         }  
+         httpclient.getConnectionManager().shutdown();  
+	     
+         JSONObject obj = new JSONObject(result);
+         if((obj.getString("status")).equals("OK")){
+      		JSONArray array = obj.getJSONArray("rows");
+      		int count = array.length();
+      		for(int i = 0; i < count; i++){
+      			JSONObject item = array.getJSONObject(i);
+      			if(item.getJSONObject("status").equals("OK")){
+      				JSONObject element=item.getJSONObject("elements");
+          			JSONObject duration = element.getJSONObject("duration");
+          			JSONObject distance = element.getJSONObject("distance");
+          			Double walkingTime = duration.getDouble("value");
+          			String walkingTimeText = duration.getString("text");
+          			Double distanceValue=distance.getDouble("value");
+          			String distanceValueText=distance.getString("text");
+          		   
+          			Log.d("distances", "ArrayLength="+array.length() + "wTime:"+walkingTime + " "+distanceValueText);
+          			
+      			}else{
+      				
+      			}
+      			
+      		}
+      	}
+		 
+		 //return distanceS;
+	 }
 	
 	 private String[] getDirectionData(GeoPoint start, GeoPoint end) {
 		 String sourceLat = Double.toString(start.getLatitudeE6()/1E6);
@@ -159,6 +294,8 @@ public class ListItemMapActivity extends MapActivity{
 
 			menu.add(1, 100, 1, "Show directions");
 			menu.add(1, 101, 2, "Go back");
+			menu.add(1,102,3,"Show more store");
+			menu.add(1,103,4,"Suggest nearby store");
 			return true;
 		}
 
@@ -180,35 +317,81 @@ public class ListItemMapActivity extends MapActivity{
 				ListItemMapActivity.this.finish();
 	            System.exit(0);
 				break;
+			case 102:
+				try {
+					this.nearPlaces=getPlacesData(point,"5000");
+					//getPlacesDistance(nearPlaces);
+					
+					for(int index=0;index<nearPlaces.size();index++){
+						if(nearPlaces.get(index).getName().equals(storeName)){
+							mapOverlay.addOverlay(new OverlayItem(nearPlaces.get(index).getCoordinates(), "Store: "+nearPlaces.get(index).getName(),"Address: "+nearPlaces.get(index).getLocationAddress()),new_location_store);
+						}
+						//mapOverlay.addOverlay(new OverlayItem(nearPlaces.get(index).getCoordinates(), "Store:"+nearPlaces.get(index).getName(),""),new_location_store);
+						Log.d("NearPlaces",nearPlaces.get(index).getName()+nearPlaces.get(index).getLocationAddress());
+					}
+					
+					mapOverlays=mapView.getOverlays();
+					
+					//mapOverlays.add(mapOverlay);
+			       // mapOverlays.add(new RoutePathOverlay(path));        
+				    mc = mapView.getController();
+				    mc.setCenter(point);
+				    mc.setZoom(16);
+				    mapView.invalidate();
+					
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 103:
+				
+				try {
+					nearPlaces=getPlacesData(point,"400");
+					for(int index=0;index<nearPlaces.size();index++){
+							mapOverlay.addOverlay(new OverlayItem(nearPlaces.get(index).getCoordinates(), "Store: "+nearPlaces.get(index).getName(),"Address: "+nearPlaces.get(index).getLocationAddress()),suggested_store);
+						//mapOverlay.addOverlay(new OverlayItem(nearPlaces.get(index).getCoordinates(), "Store:"+nearPlaces.get(index).getName(),""),new_location_store);
+						Log.d("NearPlaces",nearPlaces.get(index).getName()+nearPlaces.get(index).getLocationAddress());
+					}
+					
+					mapOverlays=mapView.getOverlays();
+					
+					//mapOverlays.add(mapOverlay);
+			       // mapOverlays.add(new RoutePathOverlay(path));        
+				    mc = mapView.getController();
+				    mc.setCenter(point);
+				    mc.setZoom(16);
+				    mapView.invalidate();
+					
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+				
 			}
 			return true;
 		}
-	 
-	 /*
-	@Override //to create option menu from xml file
-	    public boolean onCreateOptionsMenu(Menu menu) {
-	    	MenuInflater inflater= getMenuInflater();
-	    	inflater.inflate(R.menu.directions, menu);
-	    	return true;
-	} 
-	 
-	 @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-		 	if(item.getItemId()==R.id.item1){
-		 		String currentLatitude="37.779300";
-    			String currentLongitude="-122.419200";
-    			String fixedLatitude="37.780654";
-    			String fixedLongitude="-122.423703";
-    			String uri = "http://maps.google.com/maps?saddr=" + currentLatitude+","+currentLongitude+"&daddr="+fixedLatitude+","+fixedLongitude+"'&dirflg=w";
-    			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
-    			intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-    			startActivity(intent);
-		 	}
-		 
-		 return super.onOptionsItemSelected(item);
-	 }
-	 */
-	 
+		
+	public String reverseGeoPoint(GeoPoint p){
+		 Geocoder geocoder=new Geocoder(mapView.getContext(),Locale.getDefault()); 
+		 String display="";
+         try{
+        	 List<Address> address = geocoder.getFromLocation(p.getLatitudeE6()/1E6, p.getLongitudeE6()/1E6, 1);
+        	 if(address.size()>0){
+        		 display ="";
+        		 for(int i=0;i<address.get(0).getMaxAddressLineIndex();i++){
+        			 display+=address.get(0).getAddressLine(i)+"\n";
+        		 }
+        	 }
+         }catch(IOException e){
+        	 e.printStackTrace();
+         } 
+		return display;
+	}
+		
     @Override
     protected boolean isRouteDisplayed() {
         return false;
@@ -235,4 +418,9 @@ public class ListItemMapActivity extends MapActivity{
              }
              return super.onKeyDown(keyCode, event);
      }
+	 
+	 
+	 
+	 
+	 
 }
