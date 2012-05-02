@@ -17,7 +17,7 @@
     <string name="storeNamesPrompt">Choose a store</string>
     <string-array name="storeNames">
         <item>Safeway</item>
-        <item>Whole Foods</item>
+        <item>Whole Foods Market</item>
         <item>Luckys</item>
         <item>Trader Joes</item>
     </string-array>

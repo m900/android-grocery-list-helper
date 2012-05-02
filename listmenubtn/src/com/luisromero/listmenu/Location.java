@@ -17,11 +17,19 @@ public class Location {
 	private String name;
 	private GeoPoint coordinates;
 	private String address;
+	private String arrivalTimeText;
+	private Long arrivalTimeValue;
+	private String distanceText;
+	private Long distanceValue;
 	
 	public Location(String name, GeoPoint coordinates,String address){
 		this.name=name;
 		this.coordinates=coordinates;
 		this.address=address;
+	}
+	
+	public Location(){
+		
 	}
 	
 	public long getId(){

@@ -81,18 +81,14 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
         txtItem = (EditText) findViewById(R.id.txtItem);
         btnAdd = (Button) findViewById(R.id.btnAdd);
-        listItems= (ListView) findViewById(R.id.listItems);
-        
+        listItems= (ListView) findViewById(R.id.listItems);        
         btnAdd.setOnClickListener(this);
         txtItem.setOnClickListener(this);
         dbHelper = new DbHelper(this); // not sure if this is a good idea/ it runs multiple times or something..
         db=dbHelper.getWritableDatabase();
         toDoItems = this.getAllProducts();
-        //items=new ArrayList<Item>(); // add item objects to an array list for easier location mapping
-        
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
         listItems.setAdapter(aa);
         listItems.setOnItemClickListener(this);
@@ -111,16 +107,6 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     		//Log.d("Option","Map item was clicked");
     		// Sends user to a map where a store location is showed- item can be bought there.
     		if(getIsSomeItemChecked()==true){
-    			/*
-    			String currentLatitude="37.779300";
-    			String currentLongitude="-122.419200";
-    			String fixedLatitude="37.780654";
-    			String fixedLongitude="-122.423703";
-    			String uri = "http://maps.google.com/maps?saddr=" + currentLatitude+","+currentLongitude+"&daddr="+fixedLatitude+","+fixedLongitude;
-    			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
-    			intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-    			startActivity(intent);
-    			*/
     			
     			Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
         		Item selectedItem=items.get(getPosItem());
@@ -208,7 +194,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 			setIsSomeItemChecked(true);
 			Item current=items.get(getPosItem());
 			
-			Toast.makeText(getApplicationContext(),"position is: "+ getPosItem() +" _id:"+current.getId()+" name:"+current.getProduct(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(),"position is: "+ getPosItem() +" _id:"+current.getId()+" name:"+current.getProduct(), Toast.LENGTH_SHORT).show();
 		}else if(getIsSomeItemChecked()==true && position==getPosItem()){
 			ListTextView.setChecked(false);
 			setIsSomeItemChecked(false);
@@ -282,7 +268,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     			 String productStore=data.getExtras().getString("productStore");
         		 this.updateProductToDB(id,productName,productQuantity,productStore);
         		 this.updateProductNameOnList(productName);
-        	     Toast.makeText(getApplicationContext(), "values changed: "+ productName +" "+ productQuantity+" "+ productStore, Toast.LENGTH_SHORT).show();
+        	     //Toast.makeText(getApplicationContext(), "values changed: "+ productName +" "+ productQuantity+" "+ productStore, Toast.LENGTH_SHORT).show();
         	 }
          }
     }
