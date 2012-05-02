@@ -176,11 +176,9 @@ public class ListItemMapActivity extends MapActivity{
      			newLocation.setName(storeName);
      			newLocation.setCoordinates(store);
      			newLocation.setLocationAddress(storeAddress);
-     			
      			Log.d("StoreName:"+storeName, storeAddress);
      			Log.d("placeLocation",storeAddress);
      			newStores.add(newLocation);
-     		
      		}
      	}
      	
