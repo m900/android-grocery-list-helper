@@ -32,6 +32,12 @@ public class Location {
 		
 	}
 	
+	public void setArrivalTime(String timeText,Long timeValue){
+		this.arrivalTimeText=timeText;
+		this.arrivalTimeValue=timeValue;
+	}
+	
+	
 	public long getId(){
 		return this.id;
 	}
