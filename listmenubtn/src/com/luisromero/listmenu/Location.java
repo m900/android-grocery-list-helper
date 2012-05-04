@@ -18,9 +18,9 @@ public class Location {
 	private GeoPoint coordinates;
 	private String address;
 	private String arrivalTimeText;
-	private Long arrivalTimeValue;
+	private long arrivalTimeValue;
 	private String distanceText;
-	private Long distanceValue;
+	private long distanceValue;
 	
 	public Location(String name, GeoPoint coordinates,String address){
 		this.name=name;
@@ -29,15 +29,35 @@ public class Location {
 	}
 	
 	public Location(){
-		
+		//base constructor
 	}
 	
-	public void setArrivalTime(String timeText,Long timeValue){
+	public void setArrivalTimeValues(String timeText,Long timeValue){
 		this.arrivalTimeText=timeText;
 		this.arrivalTimeValue=timeValue;
 	}
 	
+	public void setDistanceValues(String distanceText,Long distanceValue){
+		this.distanceText=distanceText;
+		this.distanceValue=distanceValue;
+	}
 	
+	public String getArrivalTimeText(){
+		return this.arrivalTimeText;
+	}
+	
+	public Long getArrivalTimeValue(){
+		return this.arrivalTimeValue;
+	}
+	
+	public String getDistanceText(){
+		return this.distanceText;
+	}
+	
+	public Long getDistanceValue(){
+		return this.distanceValue;
+	}
+		
 	public long getId(){
 		return this.id;
 	}
