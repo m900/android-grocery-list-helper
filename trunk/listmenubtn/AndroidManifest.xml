@@ -24,6 +24,6 @@
         <activity android:name=".AddListItemActivity"></activity>
         <activity android:name=".EditListItemActivity"></activity>
         <activity android:name=".ListItemMapActivity"></activity>
-       
+       	<activity android:name=".MapSelectedActivity"></activity>
     </application>
 </manifest>

@@ -90,6 +90,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         db=dbHelper.getWritableDatabase();
         toDoItems = this.getAllProducts();
         aa= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,toDoItems);
+        
         listItems.setAdapter(aa);
         listItems.setOnItemClickListener(this);
     }
@@ -106,10 +107,11 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     	if(item.getItemId()==R.id.item1){
     		//Log.d("Option","Map item was clicked");
     		// Sends user to a map where a store location is showed- item can be bought there.
-    		if(getIsSomeItemChecked()==true){
+    		if(getIsSomeItemChecked()==false){
     			
-    			Intent intent=new Intent(MainActivity.this,ListItemMapActivity.class);
-        		Item selectedItem=items.get(getPosItem());
+    			Intent intent=new Intent(MainActivity.this,MapSelectedActivity.class);
+        		/*
+    			Item selectedItem=items.get(getPosItem());
         		this.item_location=selectedItem.getLocation();
         		this.item_name=selectedItem.getProduct();
         		this.item_quantity=Integer.toString(selectedItem.getQuantity());
@@ -119,6 +121,9 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
         		setIsSomeItemChecked(false);
     			CheckedTextView restartView=(CheckedTextView)viewItem;
     			restartView.setChecked(false);
+    			*/
+    	
+    			intent.putStringArrayListExtra("toDoItems",toDoItems);
         		startActivity(intent);
         		
     		}else{
@@ -192,7 +197,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
 			setPosItem(position);
 			setViewItem(view);
 			setIsSomeItemChecked(true);
-			Item current=items.get(getPosItem());
+			//Item current=items.get(getPosItem());
 			
 			//Toast.makeText(getApplicationContext(),"position is: "+ getPosItem() +" _id:"+current.getId()+" name:"+current.getProduct(), Toast.LENGTH_SHORT).show();
 		}else if(getIsSomeItemChecked()==true && position==getPosItem()){
