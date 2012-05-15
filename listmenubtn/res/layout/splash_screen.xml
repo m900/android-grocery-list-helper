@@ -9,6 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/splash"
-        android:src="@drawable/splash" />
+        android:src="@drawable/greenbasket" />
 
 </LinearLayout>
