@@ -15,6 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+
+/*	@author: Luis G Romero
+ *  @param : EditListItemActivity 
+ *  Purpose: Helps to add and edit the items on the ListView from MainActivity
+ *  		 Uses bundles and ActivityResults to pass data among intents.
+ */
 public class EditListItemActivity extends Activity implements OnClickListener, OnKeyListener, OnItemSelectedListener{
 	Button btnSaveEdit;
 	Button btnCancel;

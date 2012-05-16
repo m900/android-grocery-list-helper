@@ -21,4 +21,5 @@
         <item>Luckys</item>
         <item>Trader Joes</item>
     </string-array>
+    <string name="mapItemsText">Map Items</string>
 </resources>

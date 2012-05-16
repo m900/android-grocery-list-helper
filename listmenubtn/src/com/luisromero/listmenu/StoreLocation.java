@@ -8,7 +8,7 @@ import com.google.android.maps.GeoPoint;
  * 
  * */
 
-public class Location {
+public class StoreLocation {
 	/*
 	 * The following variables immitate the SQLite db' (location) table.
 	 * 
@@ -22,13 +22,13 @@ public class Location {
 	private String distanceText;
 	private long distanceValue;
 	
-	public Location(String name, GeoPoint coordinates,String address){
+	public StoreLocation(String name, GeoPoint coordinates,String address){
 		this.name=name;
 		this.coordinates=coordinates;
 		this.address=address;
 	}
 	
-	public Location(){
+	public StoreLocation(){
 		//base constructor
 	}
 	

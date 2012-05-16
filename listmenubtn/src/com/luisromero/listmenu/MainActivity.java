@@ -26,6 +26,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ListView;
 
+/*	@author: Luis G Romero
+ *  @param MainActivity
+ *  Purpose: Displays a list of items to shop using ListView with checkable options.
+ * 			 Displays menus and controls the main functionality of the application to
+ *           add, remove, edit and map items on the phone screen.
+ */
+
 public class MainActivity extends Activity implements OnClickListener, OnKeyListener , OnItemClickListener{
     /** Called after the splash-screen */    
     EditText txtItem;
@@ -105,34 +112,20 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	if(item.getItemId()==R.id.item1){
-    		//Log.d("Option","Map item was clicked");
-    		// Sends user to a map where a store location is showed- item can be bought there.
+    		
     		if(getIsSomeItemChecked()==false){
     			
     			Intent intent=new Intent(MainActivity.this,MapSelectedActivity.class);
-        		/*
-    			Item selectedItem=items.get(getPosItem());
-        		this.item_location=selectedItem.getLocation();
-        		this.item_name=selectedItem.getProduct();
-        		this.item_quantity=Integer.toString(selectedItem.getQuantity());
-        		intent.putExtra("storeLocation", this.item_location);
-        		intent.putExtra("productName", this.item_name);
-        		intent.putExtra("productQuantity", this.item_quantity);
-        		setIsSomeItemChecked(false);
-    			CheckedTextView restartView=(CheckedTextView)viewItem;
-    			restartView.setChecked(false);
-    			*/
-    	
+        		
     			intent.putStringArrayListExtra("toDoItems",toDoItems);
         		startActivity(intent);
         		
     		}else{
-    			Toast.makeText(getApplicationContext(),"Select and item to show on Map", Toast.LENGTH_SHORT).show();
+    			Toast.makeText(getApplicationContext(),"Deselect item(s)", Toast.LENGTH_SHORT).show();
     		}
     		
     	}else if(item.getItemId()==R.id.item2){
-    		//Log.d("Option","Edit item was clicked");
-    		//Toast.makeText(getApplicationContext(),"Size of items list is: "+ items.size(), Toast.LENGTH_SHORT).show();
+    		
     		if(getIsSomeItemChecked()==true){
     			
     			Item selectedItem =items.get(getPosItem());
@@ -151,7 +144,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     			Toast.makeText(getApplicationContext(),"Select and item to edit", Toast.LENGTH_SHORT).show();
     		}
     	}else if(item.getItemId()==R.id.item3){
-    		//Log.d("Option","Delete item was clicked");
+    		
     		if(getIsSomeItemChecked()==true){
     			setIsSomeItemChecked(false);//restart
     			CheckedTextView restartView = (CheckedTextView)viewItem;
@@ -162,7 +155,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     			Toast.makeText(getApplicationContext(),"Select an item to delete",Toast.LENGTH_SHORT).show();
     		}
     	}else if(item.getItemId()==R.id.item4){
-    		//Log.d("Option","Close App was clicked");
+    		
     		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
     		builder.setMessage("Are you sure you want to exit?");
     		builder.setCancelable(false);
@@ -189,17 +182,13 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     	viewItem=view;
 		CheckedTextView ListTextView = (CheckedTextView)view;
-		/*If some item is checked others cannot be checked
-		 * And only the one checked can be unchecked.
-		 * */
+		
 		if(getIsSomeItemChecked()==false){
 			ListTextView.setChecked(true);
 			setPosItem(position);
 			setViewItem(view);
 			setIsSomeItemChecked(true);
-			//Item current=items.get(getPosItem());
 			
-			//Toast.makeText(getApplicationContext(),"position is: "+ getPosItem() +" _id:"+current.getId()+" name:"+current.getProduct(), Toast.LENGTH_SHORT).show();
 		}else if(getIsSomeItemChecked()==true && position==getPosItem()){
 			ListTextView.setChecked(false);
 			setIsSomeItemChecked(false);
@@ -273,7 +262,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     			 String productStore=data.getExtras().getString("productStore");
         		 this.updateProductToDB(id,productName,productQuantity,productStore);
         		 this.updateProductNameOnList(productName);
-        	     //Toast.makeText(getApplicationContext(), "values changed: "+ productName +" "+ productQuantity+" "+ productStore, Toast.LENGTH_SHORT).show();
+        	    
         	 }
          }
     }
@@ -336,7 +325,7 @@ public class MainActivity extends Activity implements OnClickListener, OnKeyList
     	return toDoItems;
     }
     
-    /* This gets the lates DB Items table entry - to get the id and other 
+    /* This gets the latest DB Items table entry - to get the id and other 
      * 
      * information and update it on the Item object List
      * 
