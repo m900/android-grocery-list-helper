@@ -1,8 +1,5 @@
 package com.luisromero.listmenu;
 
-
-
-
 import java.util.ArrayList;
 
 
@@ -25,18 +22,21 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
 
+/*	@author: Luis G Romero
+ *  @param: MapMarkerOverlay 
+ *  Purpose: Adds and helps to display customized Markers - Green Baskets, Blue Baskets and Red Baskets
+ *           on the Google Map view.
+ */
 public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	private MapView mapView;
 	private BalloonLayout balloonView;
 	private View clickRegion;
 	private int balloonViewOffset;
-	//private Context context;
 	
 	public MapMarkerOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker));
 		this.mapView=mapView;
-		//this.context=mapView.getContext();
 	}
 
 	@Override
@@ -63,12 +63,6 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	@Override
 	protected boolean onTap(int index) {
 	  OverlayItem item = mOverlays.get(index);
-	 /*
-	  String message="";
-	  message+=item.getTitle()+item.getSnippet();
-	  Toast.makeText(mapView.getContext(),message , Toast.LENGTH_SHORT).show();
-	  */
-	  
 	  final int thisIndex = index;
       final GeoPoint point = item.getPoint();
 	 
@@ -93,7 +87,6 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
                       }
                       return true;
               }
-
       });
 
       balloonView.setVisibility(View.VISIBLE);
@@ -116,12 +109,10 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	  }
 	  
 	  protected boolean onBalloonTap(int index) {
-         
          return true;
 	  }
 	
 	public void draw(Canvas canvas, MapView map, boolean shadow){
-
 	    super.draw(canvas, map, shadow);
 	    Paint mPaint = new Paint();
 	    mPaint.setDither(true);
@@ -142,7 +133,6 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	    canvas.drawPath(path, mPaint);
 	}
 	
-	
 	/*
 	 * This onTouchEvent:
 	 * Returns on a Toast message the latitude and longitude of the location touched in Android device screen.
@@ -152,37 +142,6 @@ public class MapMarkerOverlay extends ItemizedOverlay<OverlayItem> {
 	 @Override
      public boolean onTouchEvent(MotionEvent event, MapView mapView) 
      {
-		// To show the latitude and longitude of Touched location on map.
-         //---when user lifts his finger---
-        /* 
-		 if (event.getAction() == 1) {                
-             GeoPoint p = mapView.getProjection().fromPixels(
-                 (int) event.getX(),
-                 (int) event.getY());
-             //String place ="";
-             //place+=p.getLatitudeE6()/1E6 + "," + p.getLongitudeE6()/1E6;
-             
-                 Toast.makeText(mapView.getContext(), 
-                     p.getLatitudeE6() / 1E6 + "," + 
-                     p.getLongitudeE6() /1E6 , 
-                     Toast.LENGTH_SHORT).show();
-              
-             Geocoder geocoder=new Geocoder(mapView.getContext(),Locale.getDefault()); 
-             try{
-            	 List<Address> address = geocoder.getFromLocation(p.getLatitudeE6()/1E6, p.getLongitudeE6()/1E6, 1);
-            	 if(address.size()>0){
-            		 String display ="";
-            		 for(int i=0;i<address.get(0).getMaxAddressLineIndex();i++){
-            			 
-            			 display+=address.get(0).getAddressLine(i)+"\n";
-            		 }
-            		 Toast.makeText(mapView.getContext(), display, Toast.LENGTH_SHORT).show();
-            	 }
-             }catch(IOException e){
-            	 e.printStackTrace();
-             }       
-         }
-	 */
 		return false;                            
      }
 

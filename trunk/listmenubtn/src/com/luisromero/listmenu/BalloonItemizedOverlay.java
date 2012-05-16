@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -17,9 +16,12 @@ import com.google.android.maps.MapView;
 
 import com.google.android.maps.OverlayItem;
 
-
+/*	@author: Luis G Romero
+ *  @param : BalloonItemizedOverlay
+ *  Purpose: Displays a Balloon Tip with information about places on the Google Map.
+ *  
+ */
 public class BalloonItemizedOverlay extends ItemizedOverlay<OverlayItem>{
-	private final static String TAG = "BALLOON OVERLAY";
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	private MapView mapView;
 	
@@ -30,11 +32,8 @@ public class BalloonItemizedOverlay extends ItemizedOverlay<OverlayItem>{
 	public BalloonItemizedOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker));
         this.mapView = mapView;
-        //balloonViewOffset = defaultMarker.getIntrinsicHeight();
-        //populate();
 	}
 
-	
 	@Override
 	protected OverlayItem createItem(int i) {
 		return mOverlays.get(i);
@@ -59,7 +58,7 @@ public class BalloonItemizedOverlay extends ItemizedOverlay<OverlayItem>{
 	 
 	  boolean isRecycled = true;
 	  if (balloonView == null) {
-          Log.d(TAG, "New balloonView");
+         
           balloonView = new BalloonLayout(mapView.getContext(), balloonViewOffset);
           clickRegion = (View) balloonView.findViewById(R.id.balloon_inner_layout);
           isRecycled = false;
@@ -90,19 +89,15 @@ public class BalloonItemizedOverlay extends ItemizedOverlay<OverlayItem>{
 	  return true;
 	}
 	
-
-	  public boolean hideBalloon() {
+	public boolean hideBalloon() {
           if ((balloonView != null) && (balloonView.getVisibility() != View.GONE)) {
                   balloonView.setVisibility(View.GONE);
                   return true;
           }
           return false;
-	  }
+	}
 	  
-	  protected boolean onBalloonTap(int index) {
-          Log.d(TAG, "onBalloonTap not catched!");
+	protected boolean onBalloonTap(int index) {
           return true;
-	  }
-
-  
+	}
 }

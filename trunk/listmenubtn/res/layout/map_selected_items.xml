@@ -10,7 +10,7 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true">
 		<Button android:id="@+id/btnMapItems" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="Map Items" />
+			android:layout_height="wrap_content" android:text="@string/mapItemsText" />
 	</LinearLayout>
 	<ListView android:id="@+id/mapListView" android:layout_width="fill_parent"
 		android:layout_height="0dip" android:choiceMode="multipleChoice"

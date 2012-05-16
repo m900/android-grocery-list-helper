@@ -8,24 +8,37 @@ package com.luisromero.listmenu;
 
 public class Item {
 	/*
-	 * The following variables immitate the SQLite db' (item) table.
+	 * The following variables imitate the SQLite db' (item) table.
 	 * 
 	 * */
 	private int id; //Key and auto-increment in DB
 	private String product;
 	private String store;
 	private int quantity;
-	//Empty Constructor
+	
+	
+	/*
+	 * Default Empty Constructor. 
+	 * 
+	*/
 	public Item(){
 		
 	}
 	
+	/*
+	 * Default Constructor. 
+	 * @param int id, String product, int quantity
+	*/
 	public Item(int id, String product,int quantity){
 		this.id=id;
 		this.product=product;
 		this.quantity=quantity;
 	}
 	
+	/*
+	 * Default Constructor. 
+	 * @param String product, int quantity
+	*/
 	public Item(String product,int quantity){
 		this.product=product;
 		this.quantity=quantity;

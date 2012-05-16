@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 
+
+/*	@author: Luis G Romero
+ *  @param : SplashScreen  
+ *  Purpose: Displays a customized Splash screen with the logo of the mobile
+ *           application. Green Basket
+ */
 public class SplashScreen extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

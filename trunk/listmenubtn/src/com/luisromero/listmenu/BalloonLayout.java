@@ -7,12 +7,16 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/*	@author: Luis G Romero
+ *  @param : BalloonLayout
+ *  Purpose: Structures the information displayed in the BalloonItemizedOverlay object.
+ * 
+ */
 public class BalloonLayout extends FrameLayout {
 
     private final LinearLayout layout;
     private final TextView title;
-    //private final TextView message;
-
+ 
     public BalloonLayout(Context context, int balloonBottomOffset) {
             super(context);
          
@@ -20,7 +24,6 @@ public class BalloonLayout extends FrameLayout {
             layout = new LinearLayout(context);
             layout.setVisibility(VISIBLE);
 
-            // FIXME reuse the view
             final LayoutInflater inflater = (LayoutInflater) context
                             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             
@@ -48,16 +51,6 @@ public class BalloonLayout extends FrameLayout {
                     title.setVisibility(GONE);
             }
     }
-  /*  
-    public void setMessage(String text){
-    	layout.setVisibility(VISIBLE);
-        if (text != null) {
-                message.setVisibility(VISIBLE);
-                message.setText(text);
-        } else {
-                message.setVisibility(GONE);
-        }
-    }
-*/
+ 
 }
 

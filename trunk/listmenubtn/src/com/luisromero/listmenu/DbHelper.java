@@ -6,17 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * DbHelper - creates the database(s) needed 
- * 
  * @author Luis Romero
- * 
- 
  * @param SQLite db - creates tables to insert data on database.
  *
- * 
  **/
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -47,16 +42,10 @@ public class DbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE IF NOT EXISTS items (_id INTEGER PRIMARY KEY AUTOINCREMENT, product VARCHAR(35), quantity INTEGER, location VARCHAR(35));");
-		//db.execSQL("CREATE TABLE location (_id INTEGER PRIMARY KEY AUTOINCREMENT, location VARCHAR(40), c_lon INTEGER, c_lat INTEGER);");
-		//db.execSQL("CREATE TABLE locationStock(_id INTEGER, product VARCHAR(35), quantity INTEGER, inStock INTEGER);");
-		Log.d("DbHelper","onCreate - table name created");
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS items");
-		//db.execSQL("DROP TABLE IF EXISTS location");
-		//db.execSQL("DROP TABLE IF EXISTS locationStock");
-		Log.d("DbHelper","onUpgrade - drop table");
 		this.onCreate(db);
 	}
 	
