@@ -5,6 +5,30 @@
 This journal is specified to follow the progress of the development of the android application.
 
 (UPDATES)!!
+= Details for 5/15/2012 =
+* Re-factored code and clean up Log.d calls.
+
+*Wrote a small concise READ ME file to the repository to explain basic
+class hierarchy.
+
+*Added more functionality to GPS location. Commented it to test it on emulator with mock-current location data.
+
+= Details for 5/08/2012 =
+*Added Google Places API to show more places on the map and nearby places.
+
+*Google places JSON file parsing to gather stores of preference Geo-location and distance.
+
+*Color coded different store types to allow users distinguished what is their preferred store to go to and other unknown convenience stores nearby.
+
+*NOTE: Presented to class the application functionality with a PowerPoint slide and a video demo of the Android Application.
+
+= Details for 5/01/2012 =
+*Improved overlay item with a customized icon to display the stores nearby.
+
+*Researched - and tested basic usage of Google Places API to gather real  data.
+
+*Added capability to add more than one store location to be mapped.
+
 = Details for 4/24/2012 =
 *Added a turn by turn route overlay between two points.
 
