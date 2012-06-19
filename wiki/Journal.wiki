@@ -1,4 +1,5 @@
-#summary This is the Android-grocery-list-helper journal.
+#summary This is the Android-grocery-list-helper journal by Luis Romero
+(Green Basket APP)
 
 = Introduction =
 
